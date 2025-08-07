@@ -200,13 +200,51 @@ Each project follows this systematic analysis pattern:
 
 ### DETAILED LEARNING WORKFLOW FOR EACH PROJECT
 
+#### CRITICAL: Top-Down Exploration Methodology
+**Rafael's Learning Style:** Always start with the big picture first, then drill down into details
+**Approach:** Bird's-eye view → Structure understanding → Folder exploration → Code analysis
+
 #### Step 1: Project Selection and Setup
 1. **Choose project** based on current week's focus and complexity level
 2. **Clone or access** project using Claude Code's repository tools
-3. **Initial overview** - README, structure, main files identification
-4. **Set expectations** - What should I learn from this specific project?
 
-#### Step 2: Four-Pillar Systematic Analysis
+#### Step 2: Top-Down Repository Exploration (MANDATORY SEQUENCE)
+
+**2a. README Analysis First**
+- Read README.md completely to understand:
+  - What the project does (purpose and goals)
+  - Why it exists (problem it solves)
+  - How to use it (basic usage)
+  - Target audience and scope
+- Document key insights and questions raised
+
+**2b. Repository Structure Overview**  
+- Use `LS` tool to map overall folder structure
+- Identify main organizational patterns:
+  - What are the major folders/directories?
+  - How is content organized logically?
+  - What file types are present (extensions)?
+- Create mental model of project architecture
+
+**2c. Folder-by-Folder Exploration**
+- Explore each major folder systematically:
+  - What's the purpose of each directory?
+  - What types of files live in each folder?
+  - How do folders relate to each other?
+- Use `LS` and `Glob` tools to understand content without diving into code
+
+**2d. File Pattern Recognition**
+- Identify common file types and naming patterns
+- Understand configuration files, documentation, data files
+- Spot the main executable/entry point files
+- Note any special files (requirements.txt, .gitignore, etc.)
+
+**2e. ONLY THEN: Code Analysis**
+- Select representative files based on folder exploration
+- Start with simpler utility files before complex implementations
+- Use context from README and structure to understand code purpose
+
+#### Step 3: Four-Pillar Systematic Analysis
 **Execute each pillar methodically, documenting discoveries:**
 
 **Foundation Setting Questions:**

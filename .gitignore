@@ -33,3 +33,8 @@ Thumbs.db
 tmp/
 temp/
 .tmp
+
+# External repositories we clone for analysis
+anthropic-cookbook/
+*-cookbook/
+external-repos/
