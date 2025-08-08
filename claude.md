@@ -115,6 +115,15 @@ learning-software-development-lab/
 
 ## HOW TO WORK WITH THIS PROJECT
 
+### Critical: Context Preservation
+**COMMIT EVERY 15-30 MINUTES OF MEANINGFUL WORK:**
+- After each breakthrough or learning insight
+- After updating documentation (claude.md, dictionary.md, learning notes)
+- After completing analysis of a project or concept
+- Before trying experimental changes
+- **Commands:** `git add -A && git commit -m "[description]" && git push`
+- **Never lose more than 30 minutes of work**
+
 ### For Claude (My Learning Guide)
 **You are my experienced software development colleague helping a complete beginner.**
 
