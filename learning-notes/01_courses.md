@@ -108,10 +108,56 @@ Each course builds specific skills:
 
 ## Learning Approach
 
-Follow the top-down methodology: understand the big picture first, then dive into implementation details. Each course includes extensive visual explanations, real-world analogies, and practical exercises that reinforce learning.
+- Learn by building and contributing to Anthropic's community
+- Prioritize velocity over perfection - ship early, iterate fast
+- Learn just enough to make the next step forward
+- Learn in the open - document and share discoveries
+- Always use top-down methodology: README → Structure → Folders → Code
+- Start with big picture before diving into details
+- Use agentic tools (glob, grep) for systematic exploration
+- Document discoveries in learning-notes/
+- Simple, readable code over complex solutions
+- Extensive comments and explanations for learning
+- Real-world analogies for technical concepts
 
-## Next Steps
+## Learning Scenarios
 
-Start with Anthropic API Fundamentals if you're new to Claude integration, or jump to Prompt Engineering if you already know the basics. The repository includes comprehensive setup instructions and all required code examples.
+Use these courses to learn software development through six practical scenarios:
 
-**Goal:** Build practical AI applications while mastering the underlying concepts and best practices used by professional developers.
+**1. Requirements Analysis with Prompt Engineering**
+- Use Prompt Engineering course to learn software requirements gathering
+- SDLC Phase: Requirements Analysis  
+- Apply top-down methodology to understand requirements, document discoveries
+- Practice engineering prompts that help gather clear, complete requirements
+
+**2. Design & Architecture with Real World Prompting**
+- Use Real World Prompting to learn software design patterns and system architecture
+- SDLC Phase: Design
+- Follow README → Structure → Folders → Code approach, build prototypes while learning
+- Apply prompt engineering to real architectural decisions
+
+**3. Implementation with API Fundamentals** 
+- Use API Fundamentals to learn coding practices and development patterns
+- SDLC Phase: Implementation
+- Prioritize velocity over perfection, learn just enough for next step, commit frequently
+- Build functional code using Claude integration
+
+**4. Testing & QA with Prompt Evaluations**
+- Use Prompt Evaluations course to learn systematic testing methodologies
+- SDLC Phase: Testing
+- Use agentic tools for systematic exploration, document test results
+- Create evaluation frameworks and quality metrics
+
+**5. Deployment & CI/CD with Tool Use**
+- Use Tool Use course to learn deployment pipelines and DevOps automation
+- DevOps Phase: Continuous Integration/Deployment
+- Build and contribute to community, ship early and iterate
+- Integrate AI tools into development workflows
+
+**6. Maintenance & Monitoring with Evaluation Techniques**
+- Use Evaluation approaches to learn system monitoring and continuous improvement
+- DevOps Phase: Operations & Maintenance
+- Learn in the open, document discoveries, iterative improvement
+- Practice ongoing prompt optimization and performance monitoring
+
+**Goal:** Master software development lifecycle and DevOps principles through hands-on Claude Code practice.
