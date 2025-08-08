@@ -2,6 +2,36 @@
 """
 Session Starter Script for Learning Software Development Lab
 Generates context-loading prompts for new Claude Code sessions with built-in evaluation.
+
+USAGE:
+    python session_starter.py --scenario 1                 # Generate prompt for Scenario 1
+    python session_starter.py --scenario 1 --eval          # Include evaluation rubric
+    python session_starter.py -s 1 -e                      # Short form
+
+WORKFLOW:
+    1. Run script: python session_starter.py -s 1 -e
+    2. Copy the generated prompt 
+    3. Paste prompt to new Claude Code session
+    4. Wait for Claude's response
+    5. Score Claude's understanding using evaluation rubric (aim for 9/12+)
+    6. If score >= 9/12: proceed with session
+    7. If score < 9/12: address gaps before continuing
+
+SCENARIOS:
+    1 = Requirements Analysis with Prompt Engineering
+    2 = Design & Architecture with Real World Prompting  
+    3 = Implementation with API Fundamentals
+    4 = Testing & QA with Prompt Evaluations
+    5 = Deployment & CI/CD with Tool Use
+    6 = Maintenance & Monitoring with Evaluation Techniques
+
+EXAMPLES:
+    python session_starter.py -s 1 -e    # Start Requirements Analysis scenario
+    python session_starter.py -s 2       # Generate Design scenario prompt only
+    python session_starter.py --help     # Show detailed help
+
+The script automatically finds your latest daily log and correct scenario folder.
+No manual editing required - just specify the scenario number!
 """
 
 import os
