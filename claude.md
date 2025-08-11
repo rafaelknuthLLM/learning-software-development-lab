@@ -1,45 +1,56 @@
 # Learning Software Development Lab
 
 ## Project Overview
-Complete beginner learning software development using SDLC methodology and Claude Code best practices. Transitioning from data/AI consultant to software developer through hands-on exploration and contributing to Anthropic's community.
+I'm learning software development by exploring Anthropic's real codebase like a new team member. I use Claude Code to discover how they actually build, test, and deploy software, following SDLC and DevOps best practices.
 
 ## Commands
-- No specific build commands yet (learning phase)
+**Exploration:**
+- `git clone [repo-url]` - Clone Anthropic repositories for analysis
+- `git log --oneline -10` - Check recent commits and patterns
+
+**Development:**
 - Commit frequently: `git add -A && git commit -m "description" && git push`
+- Always validate before moving to next step
 
 ## Learning Approach
+- Explore real codebases, not artificial tutorials
 - Learn by building and contributing to Anthropic's community
-- Prioritize velocity over perfection - ship early, iterate fast
-- Learn just enough to make the next step forward
-- Learn in the open - document and share discoveries
-- Always use top-down methodology: README → Structure → Folders → Code
-- Start with big picture before diving into details
-- Use agentic tools (glob, grep) for systematic exploration
-- Document my discoveries in scenario-based-learning/
+- Work in public - document and share all discoveries
+- Use systematic exploration: README → Structure → Code → Patterns
+- Validate findings with community feedback
+- Apply course skills (API, prompting, evaluation, tools) to real discovery
 
 ## Development Standards
 - Build in small, testable increments with validation checkpoints
-- Each increment must have clear acceptance criteria and be immediately testable
-- Always pause for feedback before moving to next increment
-- Commit each validated increment separately to preserve progress
-- Never build entire systems at once - catch issues early when cheap to fix
-- Each increment should add measurable value and be potentially deliverable
-- Update documentation with each increment, never defer to end
+- Each discovery must have measurable quality gates (80% coverage, 90% accuracy)
+- Always get community validation before claiming completion
+- Document everything for future team members to follow
+- Create shareable tools and insights, not just personal learning
+- Update documentation with each increment
+
+## Quality Assurance Protocol
+- **Validation:** Verify discoveries against official Anthropic documentation
+- **Community Review:** Share findings with Anthropic community for feedback
+- **Measurable Gates:** Each scenario has specific completion criteria
+- **Documentation:** Follow standardized templates for knowledge sharing
+- **Iteration:** Update approach based on learnings and community input
 
 ## Code Style Preferences
 - Simple, readable code over complex solutions
-- Extensive comments and explanations for learning
-- Real-world analogies for technical concepts
+- Extensive comments explaining discovery process
+- Real-world examples from actual Anthropic codebase
+- Focus on practical application, not theoretical concepts
 
 ## File Organization
-- claude.md: My instructions for Claude Code (this file)
-- context.md: Anthropic's team usage patterns for Claude Code
-- scenario-based-learning/: My hands-on SDLC exercises with Claude Code
-- daily-logs/: My session summaries and discoveries
-- requirements.txt: My Python dependencies for Jupyter notebooks
-- session_starter.py: My script to load project context at start of each session
+- **claude.md:** Instructions for Claude Code sessions (this file)
+- **scenario-based-learning/:** My 6 SDLC discovery scenarios
+- **daily-logs/:** Session summaries and discoveries
+- **courses/:** Anthropic's training materials I studied
+- **anthropic-cookbook/:** Examples and guides I'm exploring
 
 ## Current Focus
-Build-first learning: Create functional prototypes while learning through observation.
-Goal: Build tools and insights that benefit Anthropic's developer community.
-Current: My scenario-based learning using Anthropic's courses - Requirements Analysis with Prompt Engineering (my Scenario 1 complete).
+Real-world codebase discovery: Learn SDLC by systematically exploring how Anthropic builds software.
+
+**Goal:** Master software development through hands-on discovery of Anthropic's practices while contributing valuable tools and insights back to their community.
+
+**Status:** Working on Scenario 1 (Requirements Discovery) - systematically analyzing Anthropic's ecosystem to understand what problems their code solves.
