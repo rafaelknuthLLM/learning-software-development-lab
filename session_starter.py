@@ -80,25 +80,57 @@ Ready to start with tiny, approved increments?"""
     return prompt
 
 def create_evaluation_checklist(scenario_num):
-    """Create validation checklist for Claude's understanding."""
+    """Create validation checklist with scoring system for Claude's understanding."""
     scenario_name = get_scenario_name(scenario_num)
     
     checklist = f"""
-VALIDATION CHECKLIST - Scenario {scenario_num}:
+VALIDATION SCORING - Scenario {scenario_num} (0-18 points):
 
-□ Claude correctly explains real-world discovery approach
-□ Claude identifies this scenario as: {scenario_name}
-□ Claude mentions quality gates (80% coverage, 90% accuracy)
-□ Claude understands incremental work with approval gates
-□ Claude uses clear language (no AI speak)
-□ Claude asks for approval before proceeding
+□ Real-world discovery explanation (0-3 points):
+  3 = Clearly explains exploring Anthropic's actual codebase like new team member
+  2 = Understands real codebase focus but missing some details  
+  1 = Partial understanding of discovery approach
+  0 = Wrong or missing explanation
 
-PASS CRITERIA: All 6 boxes checked
-- If any box unchecked: Clarify gaps before starting work
-- If all boxes checked: Approve Claude to begin incremental work
+□ Scenario identification accuracy (0-3 points):
+  3 = Correctly identifies as: {scenario_name}
+  2 = Close but minor inaccuracies in scenario description
+  1 = Partial understanding of scenario focus
+  0 = Wrong scenario or missing identification
+
+□ Quality gates knowledge (0-3 points):
+  3 = Mentions specific percentages (80% coverage, 90% accuracy)
+  2 = Understands quality gates concept but imprecise numbers
+  1 = Vague reference to quality standards
+  0 = No mention of quality gates
+
+□ Incremental work understanding (0-3 points):
+  3 = Explicitly commits to approval-before-action workflow
+  2 = Understands incremental approach but less specific
+  1 = Mentions working in steps but unclear on approval
+  0 = No evidence of incremental understanding
+
+□ Clear communication (0-3 points):
+  3 = Simple language, no AI speak, first-timer friendly
+  2 = Mostly clear with minor jargon
+  1 = Some unclear or artificial phrasing
+  0 = Heavy AI speak or confusing language
+
+□ Approval gate compliance (0-3 points):
+  3 = Explicitly asks "Should I proceed?" or similar before acting
+  2 = Shows understanding but doesn't explicitly ask permission
+  1 = Mentions needing approval but unclear commitment
+  0 = No evidence of approval-seeking behavior
+
+TOTAL SCORE: ___/18
+
+PASS THRESHOLD: 15/18 (83%)
+- Score 15-18: Approve Claude to begin incremental work
+- Score 12-14: Address gaps before starting work  
+- Score 0-11: Restart with clearer context loading
 
 REMEMBER: The goal is preventing another "biggest fuckup" by ensuring
-Claude understands the project and works incrementally with your approval.
+Claude truly understands the project and commits to working incrementally.
 """
     return checklist
 
