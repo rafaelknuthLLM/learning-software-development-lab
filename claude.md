@@ -16,7 +16,6 @@ Complete beginner learning software development using SDLC methodology and Claud
 - Start with big picture before diving into details
 - Use agentic tools (glob, grep) for systematic exploration
 - Document discoveries in learning-notes/
-- Update dictionary.md with new programming terms
 
 ## Code Style Preferences
 - Simple, readable code over complex solutions
@@ -25,13 +24,13 @@ Complete beginner learning software development using SDLC methodology and Claud
 
 ## File Organization
 - claude.md: Instructions for Claude Code (this file)
-- rafael.md: Professional context
-- context.md: Anthropic team usage patterns
-- dictionary.md: Programming vocabulary with analogies
-- learning-notes/: Structured project analysis
-- daily-logs/: Session summaries
+- context.md: How Anthropic teams use Claude Code
+- learning-notes/: Structured scenario-based learning following SDLC phases
+- daily-logs/: Session summaries and discoveries
+- requirements.txt: Python dependencies for Jupyter notebooks
+- session_starter.py: Loads project context at start of each session
 
 ## Current Focus
 Build-first learning: Create functional prototypes while learning through observation.
 Goal: Build tools and insights that benefit Anthropic's developer community.
-Next: Systematic analysis of Anthropic Cookbook using four-pillar methodology.
+Current: Scenario-based learning using Anthropic courses - Requirements Analysis with Prompt Engineering (Scenario 1 complete).
