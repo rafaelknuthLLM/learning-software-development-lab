@@ -120,44 +120,158 @@ Each course builds specific skills:
 - Extensive comments and explanations for learning
 - Real-world analogies for technical concepts
 
-## Learning Scenarios
+## Learning Foundation: Anthropic's Course Guidance
 
-Use these courses to learn software development through six practical scenarios:
+**Course-Guided Skill Development:** Each discovery scenario builds on Anthropic's structured curriculum, applying course concepts to real-world codebase exploration.
 
-**1. Requirements Analysis with Prompt Engineering**
-- Use Prompt Engineering course to learn software requirements gathering
-- SDLC Phase: Requirements Analysis  
-- Apply top-down methodology to understand requirements, document discoveries
-- Practice engineering prompts that help gather clear, complete requirements
+### Core Learning Path
+Follow Anthropic's five interconnected courses as your skills foundation:
 
-**2. Design & Architecture with Real World Prompting**
-- Use Real World Prompting to learn software design patterns and system architecture
-- SDLC Phase: Design
-- Follow README → Structure → Folders → Code approach, build prototypes while learning
-- Apply prompt engineering to real architectural decisions
+**1. API Fundamentals** → Technical foundation for connecting to Claude
+- 6 interactive notebooks: authentication, message formats, model comparison, parameters, streaming, vision
+- **Applied in Scenarios:** Use API skills to systematically explore and catalog Anthropic's ecosystem
 
-**3. Implementation with API Fundamentals** 
-- Use API Fundamentals to learn coding practices and development patterns
-- SDLC Phase: Implementation
-- Prioritize velocity over perfection, learn just enough for next step, commit frequently
-- Build functional code using Claude integration
+**2. Prompt Engineering** → Core communication skills with Claude  
+- 9 chapters: clear instructions, roles, data separation, output formatting, reasoning, examples, hallucination prevention
+- **Applied in Scenarios:** Engineer prompts that extract insights from code, documentation, and architectural patterns
 
-**4. Testing & QA with Prompt Evaluations**
-- Use Prompt Evaluations course to learn systematic testing methodologies
-- SDLC Phase: Testing
-- Use agentic tools for systematic exploration, document test results
-- Create evaluation frameworks and quality metrics
+**3. Real World Prompting** → Professional application techniques
+- 5 industry notebooks: medical, call centers, customer support, lifecycle management, optimization
+- **Applied in Scenarios:** Apply business-ready prompting to analyze Anthropic's production code and practices
 
-**5. Deployment & CI/CD with Tool Use**
-- Use Tool Use course to learn deployment pipelines and DevOps automation
-- DevOps Phase: Continuous Integration/Deployment
-- Build and contribute to community, ship early and iterate
-- Integrate AI tools into development workflows
+**4. Prompt Evaluations** → Quality measurement and improvement
+- 9 lessons: human evaluation, code-based testing, AI-powered assessment, test suites, automation
+- **Applied in Scenarios:** Build evaluation frameworks to validate discovery accuracy and tool effectiveness
 
-**6. Maintenance & Monitoring with Evaluation Techniques**
-- Use Evaluation approaches to learn system monitoring and continuous improvement
-- DevOps Phase: Operations & Maintenance
-- Learn in the open, document discoveries, iterative improvement
-- Practice ongoing prompt optimization and performance monitoring
+**5. Tool Use** → Advanced system integration
+- 6 progressive lessons: tool concepts, schemas, request-execute cycles, multi-tool systems, error handling
+- **Applied in Scenarios:** Create discovery tools that integrate with external systems and automate exploration
 
-**Goal:** Master software development lifecycle and DevOps principles through hands-on Claude Code practice.
+### Scenario-Course Integration Strategy
+
+Each discovery scenario follows this learning pattern:
+1. **Study Relevant Course Material** → Build foundational understanding
+2. **Apply to Real Codebase** → Use skills on actual Anthropic code/community projects  
+3. **Create Team Deliverables** → Build shareable tools and documentation
+4. **Evaluate and Improve** → Test effectiveness and iterate
+
+**Setup Requirements:**
+- Python 3.7.1+ with `anthropic`, `python-dotenv`, and `jupyter` packages
+- Anthropic API key (stored in environment variables)  
+- Optional: `promptfoo` for advanced evaluations
+- All scenarios use Claude 3 Haiku for cost-effective learning
+
+## Real-World Discovery Scenarios
+
+Learn software development by systematically exploring Anthropic's ecosystem - treating yourself as a new team member discovering company code, patterns, and practices across their entire codebase.
+
+**Discovery Scope:** Any Anthropic code or community-written code that serves learning purposes:
+- Local cookbook/courses (guidance foundation)
+- Public Anthropic repositories on GitHub
+- Community contributions and integrations
+- Documentation sites and example implementations
+- Third-party tools and frameworks using Anthropic APIs
+
+**Integrated Skills Development:** At each SDLC phase, practice all four core competencies:
+- **API Integration:** Connecting to and using Claude effectively
+- **Prompt Engineering:** Crafting precise, effective instructions
+- **Evaluation & Testing:** Measuring and improving prompt/system quality
+- **Tool Integration:** Connecting Claude with external systems and workflows
+
+### Scenario 1: Requirements Discovery through Ecosystem Analysis
+**SDLC Phase:** Requirements Analysis  
+**Discovery Focus:** What problems does Anthropic's ecosystem solve? What user needs drive the code?
+
+**Skills Practice:**
+- **API Integration:** Use Claude API to systematically catalog Anthropic's repositories and documentation
+- **Prompt Engineering:** Write prompts that extract requirements insights from code comments, README files, and documentation
+- **Evaluation:** Test prompt effectiveness at identifying true vs. assumed requirements
+- **Tool Integration:** Build tools that automatically discover and categorize Anthropic ecosystem components
+
+**Deliverables:**
+- Requirements analysis of Anthropic's educational and production code
+- Discovery methodology documentation for future team members
+- Automated tools for ecosystem exploration
+
+### Scenario 2: Architecture Discovery through Pattern Analysis
+**SDLC Phase:** Design & Architecture  
+**Discovery Focus:** How is Anthropic's ecosystem organized? What patterns repeat across implementations?
+
+**Skills Practice:**
+- **API Integration:** Use Claude to analyze code structure and identify architectural patterns
+- **Prompt Engineering:** Create prompts that recognize design patterns, anti-patterns, and best practices
+- **Evaluation:** Validate pattern recognition accuracy against known architectural principles
+- **Tool Integration:** Build pattern analysis tools that work across multiple repositories
+
+**Deliverables:**
+- Architecture documentation and pattern libraries
+- Design pattern analysis tools for team knowledge sharing
+- Best practices guide derived from real Anthropic implementations
+
+### Scenario 3: Implementation Discovery through Code Analysis
+**SDLC Phase:** Implementation  
+**Discovery Focus:** How does Anthropic implement solutions? What coding practices do they follow?
+
+**Skills Practice:**
+- **API Integration:** Use Claude to understand implementation details and coding patterns
+- **Prompt Engineering:** Write prompts that identify implementation best practices and code quality patterns
+- **Evaluation:** Test understanding by comparing discovered practices with actual team standards
+- **Tool Integration:** Create development tools that enforce discovered best practices
+
+**Deliverables:**
+- Implementation guidelines based on real Anthropic code
+- Code analysis tools that identify quality patterns
+- Development utilities that support team coding standards
+
+### Scenario 4: Quality Discovery through Testing Analysis
+**SDLC Phase:** Testing & Quality Assurance  
+**Discovery Focus:** How does Anthropic test their systems? What quality standards do they maintain?
+
+**Skills Practice:**
+- **API Integration:** Use Claude to analyze testing approaches and quality metrics
+- **Prompt Engineering:** Create prompts that evaluate code quality and testing coverage
+- **Evaluation:** Build comprehensive evaluation frameworks for prompt and system quality
+- **Tool Integration:** Develop automated testing tools that align with Anthropic's quality standards
+
+**Deliverables:**
+- Quality assurance framework based on Anthropic's practices
+- Automated testing tools and evaluation pipelines
+- Quality metrics and monitoring systems
+
+### Scenario 5: Deployment Discovery through DevOps Analysis
+**SDLC Phase:** Deployment & CI/CD  
+**Discovery Focus:** How does Anthropic deploy and maintain their systems? What DevOps practices do they use?
+
+**Skills Practice:**
+- **API Integration:** Use Claude to understand deployment patterns and infrastructure choices
+- **Prompt Engineering:** Write prompts that identify DevOps best practices and automation opportunities
+- **Evaluation:** Test deployment strategies and measure their effectiveness
+- **Tool Integration:** Build CI/CD tools and deployment automation that follows Anthropic's patterns
+
+**Deliverables:**
+- DevOps playbook based on Anthropic's deployment practices
+- Automated deployment tools and pipelines
+- Infrastructure monitoring and management utilities
+
+### Scenario 6: Maintenance Discovery through Operations Analysis
+**SDLC Phase:** Operations & Maintenance  
+**Discovery Focus:** How does Anthropic monitor, maintain, and improve their systems over time?
+
+**Skills Practice:**
+- **API Integration:** Use Claude to analyze maintenance patterns and operational metrics
+- **Prompt Engineering:** Create prompts for system monitoring, issue detection, and continuous improvement
+- **Evaluation:** Continuously measure and improve system performance and prompt effectiveness
+- **Tool Integration:** Build operational tools for monitoring, alerting, and system optimization
+
+**Deliverables:**
+- Operations handbook based on Anthropic's maintenance practices
+- Monitoring and alerting systems
+- Continuous improvement frameworks and tools
+
+**Success Criteria for All Scenarios:**
+1. **Personal Learning:** Develop practical SDLC skills through real-world discovery
+2. **Team Contribution:** Create shareable discoveries, tools, and documentation
+3. **Process Improvement:** Build better ways to onboard future team members
+4. **Community Value:** Contribute insights and tools back to Anthropic's ecosystem
+
+**Goal:** Master software development lifecycle and DevOps principles through hands-on discovery of Anthropic's actual practices and codebase.
