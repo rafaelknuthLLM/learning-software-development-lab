@@ -1,37 +1,13 @@
 #!/usr/bin/env python3
 """
-Session Starter Script for Learning Software Development Lab
-Generates context-loading prompts for new Claude Code sessions with built-in evaluation.
+Session Starter Script for Real-World Discovery Learning
+
+CRITICAL: This script enforces incremental development with mandatory approval gates.
+Every change requires human approval to prevent rushing to wrong solutions.
 
 USAGE:
-    python session_starter.py --scenario 1                 # Generate prompt for Scenario 1
-    python session_starter.py --scenario 1 --eval          # Include evaluation rubric
-    python session_starter.py -s 1 -e                      # Short form
-
-WORKFLOW:
-    1. Run script: python session_starter.py -s 1 -e
-    2. Copy the generated prompt 
-    3. Paste prompt to new Claude Code session
-    4. Wait for Claude's response
-    5. Score Claude's understanding using evaluation rubric (aim for 9/12+)
-    6. If score >= 9/12: proceed with session
-    7. If score < 9/12: address gaps before continuing
-
-SCENARIOS:
-    1 = Requirements Analysis with Prompt Engineering
-    2 = Design & Architecture with Real World Prompting  
-    3 = Implementation with API Fundamentals
-    4 = Testing & QA with Prompt Evaluations
-    5 = Deployment & CI/CD with Tool Use
-    6 = Maintenance & Monitoring with Evaluation Techniques
-
-EXAMPLES:
-    python session_starter.py -s 1 -e    # Start Requirements Analysis scenario
-    python session_starter.py -s 2       # Generate Design scenario prompt only
-    python session_starter.py --help     # Show detailed help
-
-The script automatically finds your latest daily log and correct scenario folder.
-No manual editing required - just specify the scenario number!
+    python session_starter.py --scenario 1    # Start Requirements Discovery
+    python session_starter.py -s 2            # Start Architecture Discovery
 """
 
 import os
@@ -45,115 +21,91 @@ def find_latest_log():
     log_files = glob.glob(log_pattern)
     if not log_files:
         return "daily-logs/ (find latest)"
-    return max(log_files)  # Most recent file
+    return max(log_files)
 
-def get_scenario_folder(scenario_num):
-    """Map scenario number to folder name."""
-    scenario_mapping = {
-        1: "02_scenario_1_requirements_analysis",
-        2: "03_scenario_2_design_architecture", 
-        3: "04_scenario_3_implementation",
-        4: "05_scenario_4_testing_qa",
-        5: "06_scenario_5_deployment_cicd",
-        6: "07_scenario_6_maintenance_monitoring"
+def get_scenario_name(scenario_num):
+    """Map scenario number to discovery focus."""
+    scenarios = {
+        1: "Requirements Discovery through Ecosystem Analysis",
+        2: "Architecture Discovery through Pattern Analysis", 
+        3: "Implementation Discovery through Code Analysis",
+        4: "Quality Discovery through Testing Analysis",
+        5: "Deployment Discovery through DevOps Analysis",
+        6: "Maintenance Discovery through Operations Analysis"
     }
-    return scenario_mapping.get(scenario_num, f"0{scenario_num+1}_scenario_{scenario_num}_unknown")
+    return scenarios.get(scenario_num, f"Unknown Scenario {scenario_num}")
 
 def generate_context_prompt(scenario_num):
-    """Generate the context-loading prompt for Claude Code with incremental development framework."""
+    """Generate context-loading prompt with mandatory approval gates."""
     latest_log = find_latest_log()
-    scenario_folder = get_scenario_folder(scenario_num)
+    scenario_name = get_scenario_name(scenario_num)
     
-    prompt = f"""Hi Claude Code! I need you to get up to speed on my learning project so we can start working on Scenario {scenario_num}. Please follow these steps to understand the context:
+    prompt = f"""Hi Claude Code! I need you to understand my real-world discovery learning project.
 
-1. First, read my claude.md file to understand my learning methodology and project goals.
+CRITICAL RULES FIRST:
+- You MUST get my approval before making ANY changes to files
+- Work in tiny increments - one small change at a time
+- Ask "Should I proceed?" before each step
+- Speak clearly - no AI jargon, understandable to first-time repo visitors
+- No bloat or redundancies in any communication
 
-2. Next, read my README.md to understand the overall project structure.
+CONTEXT LOADING STEPS:
+1. Read claude.md to understand my learning approach
+2. Read README.md to understand the project purpose  
+3. Read scenario-based-learning/01_scenarios.md to understand the 6 discovery scenarios
+4. Read {latest_log} to see previous progress
 
-3. Then read the most recent daily log at {latest_log} to see what we accomplished in the previous session.
+AFTER READING, ANSWER THESE VALIDATION QUESTIONS:
+1. What is my learning approach? (Quote from claude.md)
+2. How do I learn software development? (Explain the discovery method)
+3. What is Scenario {scenario_num} about? (Name and focus)
+4. What are the quality gates for discoveries? (Specific percentages)
 
-4. Read the courses overview at scenario-based-learning/01_scenarios.md to understand the Anthropic courses we're using.
+COMMUNICATION REQUIREMENTS:
+- Write like you're explaining to someone seeing my repo for the first time
+- Use simple, clear language
+- No "As an AI" or artificial phrasing
+- Focus on practical next steps
 
-5. Finally, read both files in scenario-based-learning/{scenario_folder}/ - the README.md (for scenario overview) and session_plan.md (for what we're building today).
+INCREMENTAL WORK PROTOCOL:
+- Propose ONE small action at a time
+- Wait for my "yes" before proceeding
+- If I say "no," ask clarifying questions
+- Never build multiple things simultaneously
 
-After reading these files, please:
-- Confirm you understand the project goals and learning methodology
-- Summarize what Scenario {scenario_num} is about
-- Confirm the deliverables we're building today
-- Answer these evaluation questions to verify your understanding:
+CURRENT SCENARIO: {scenario_name}
 
-EVALUATION QUESTIONS:
-1. Quote the first learning principle from my README.md
-2. What is the main SDLC phase for Scenario {scenario_num}?
-3. What specific files will we create today (from the session plan)?
-4. What is my top-down methodology approach?
-
-CRITICAL: Follow my Development Standards from claude.md:
-- Build in small, testable increments with validation checkpoints
-- Each increment must have clear acceptance criteria and be immediately testable
-- Always pause for feedback before moving to next increment
-- Never build entire systems at once - catch issues early when cheap to fix
-
-INCREMENTAL DEVELOPMENT WORKFLOW:
-Instead of creating everything at once, you will:
-1. Create basic folder structure and README.md only
-2. PAUSE - Ask for validation before proceeding
-3. Plan the implementation in session_plan.md with specific increments
-4. PAUSE - Get approval on the plan before any coding
-5. Build minimal working version (one simple file that demonstrates core concept)
-6. PAUSE - Test and validate core concept before expanding
-7. Add features incrementally, pausing for feedback after each addition
-
-This prevents mistakes from spiraling into entire scenarios heading in wrong direction. Each pause lets me course-correct early when fixes are cheap.
-
-Ready to build incrementally?"""
+Ready to start with tiny, approved increments?"""
     
     return prompt
 
-def create_evaluation_rubric(scenario_num):
-    """Create evaluation criteria for assessing Claude's context understanding."""
-    rubric = f"""
-EVALUATION RUBRIC for Scenario {scenario_num} Context Loading:
+def create_evaluation_checklist(scenario_num):
+    """Create validation checklist for Claude's understanding."""
+    scenario_name = get_scenario_name(scenario_num)
+    
+    checklist = f"""
+VALIDATION CHECKLIST - Scenario {scenario_num}:
 
-1. FILE READING (0-3 points):
-   - 3: Quotes exact text from README.md learning principle
-   - 2: Paraphrases the learning principle correctly
-   - 1: Mentions learning principles but inaccurately
-   - 0: Doesn't demonstrate reading README.md
+□ Claude correctly explains real-world discovery approach
+□ Claude identifies this scenario as: {scenario_name}
+□ Claude mentions quality gates (80% coverage, 90% accuracy)
+□ Claude understands incremental work with approval gates
+□ Claude uses clear language (no AI speak)
+□ Claude asks for approval before proceeding
 
-2. SCENARIO UNDERSTANDING (0-3 points):
-   - 3: Correctly identifies SDLC phase and main objectives
-   - 2: Identifies most key aspects of the scenario
-   - 1: Partial understanding with some gaps
-   - 0: Misunderstands the scenario purpose
+PASS CRITERIA: All 6 boxes checked
+- If any box unchecked: Clarify gaps before starting work
+- If all boxes checked: Approve Claude to begin incremental work
 
-3. DELIVERABLES CLARITY (0-3 points):
-   - 3: Lists specific files/outputs from session plan
-   - 2: Understands general deliverables
-   - 1: Vague understanding of what to build
-   - 0: No clear grasp of deliverables
-
-4. METHODOLOGY GRASP (0-3 points):
-   - 3: Explains top-down methodology accurately
-   - 2: Shows understanding of approach
-   - 1: Partial grasp of methodology
-   - 0: No demonstration of methodology understanding
-
-TOTAL SCORE: ___/12
-
-PASS THRESHOLD: 9/12 (75%)
-- Score 9-12: Proceed with session
-- Score 6-8: Review context, clarify gaps
-- Score 0-5: Regenerate prompt, check file access
+REMEMBER: The goal is preventing another "biggest fuckup" by ensuring
+Claude understands the project and works incrementally with your approval.
 """
-    return rubric
+    return checklist
 
 def main():
-    parser = argparse.ArgumentParser(description="Generate context prompt for Claude Code session")
+    parser = argparse.ArgumentParser(description="Start discovery learning session")
     parser.add_argument("--scenario", "-s", type=int, required=True, 
                        help="Scenario number (1-6)")
-    parser.add_argument("--eval", "-e", action="store_true", 
-                       help="Show evaluation rubric")
     
     args = parser.parse_args()
     
@@ -161,30 +113,29 @@ def main():
         print("Error: Scenario must be between 1 and 6")
         return
     
+    scenario_name = get_scenario_name(args.scenario)
+    
     print("="*60)
     print(f"SESSION STARTER - SCENARIO {args.scenario}")
+    print(f"{scenario_name}")
     print("="*60)
     
-    # Generate and display the prompt
     prompt = generate_context_prompt(args.scenario)
-    print("\nCONTEXT-LOADING PROMPT:")
+    print("\nCONTEXT PROMPT (copy to Claude Code):")
     print("-" * 40)
     print(prompt)
     
-    if args.eval:
-        print("\n" + "="*60)
-        rubric = create_evaluation_rubric(args.scenario)
-        print("EVALUATION RUBRIC:")
-        print("-" * 40)
-        print(rubric)
-    
     print("\n" + "="*60)
-    print("USAGE INSTRUCTIONS:")
-    print("1. Copy the prompt above and paste it to Claude Code")
-    print("2. Wait for Claude's response")
-    print("3. Use the evaluation rubric to score Claude's understanding")
-    print("4. If score >= 9/12, proceed with session")
-    print("5. If score < 9, address gaps before continuing")
+    checklist = create_evaluation_checklist(args.scenario)
+    print("VALIDATION CHECKLIST:")
+    print("-" * 40)
+    print(checklist)
+    
+    print("\nNEXT STEPS:")
+    print("1. Copy prompt above to Claude Code")
+    print("2. Check all boxes in validation checklist")
+    print("3. Only proceed if all boxes checked")
+    print("4. Work incrementally with approval gates")
     print("="*60)
 
 if __name__ == "__main__":
