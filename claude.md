@@ -17,6 +17,15 @@ Complete beginner learning software development using SDLC methodology and Claud
 - Use agentic tools (glob, grep) for systematic exploration
 - Document my discoveries in scenario-based-learning/
 
+## Development Standards
+- Build in small, testable increments with validation checkpoints
+- Each increment must have clear acceptance criteria and be immediately testable
+- Always pause for feedback before moving to next increment
+- Commit each validated increment separately to preserve progress
+- Never build entire systems at once - catch issues early when cheap to fix
+- Each increment should add measurable value and be potentially deliverable
+- Update documentation with each increment, never defer to end
+
 ## Code Style Preferences
 - Simple, readable code over complex solutions
 - Extensive comments and explanations for learning

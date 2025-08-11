@@ -60,7 +60,7 @@ def get_scenario_folder(scenario_num):
     return scenario_mapping.get(scenario_num, f"0{scenario_num+1}_scenario_{scenario_num}_unknown")
 
 def generate_context_prompt(scenario_num):
-    """Generate the context-loading prompt for Claude Code."""
+    """Generate the context-loading prompt for Claude Code with incremental development framework."""
     latest_log = find_latest_log()
     scenario_folder = get_scenario_folder(scenario_num)
     
@@ -72,9 +72,9 @@ def generate_context_prompt(scenario_num):
 
 3. Then read the most recent daily log at {latest_log} to see what we accomplished in the previous session.
 
-4. Read the courses overview at learning-notes/01_courses.md to understand the Anthropic courses we're using.
+4. Read the courses overview at scenario-based-learning/01_scenarios.md to understand the Anthropic courses we're using.
 
-5. Finally, read both files in learning-notes/{scenario_folder}/ - the README.md (for scenario overview) and session_plan.md (for what we're building today).
+5. Finally, read both files in scenario-based-learning/{scenario_folder}/ - the README.md (for scenario overview) and session_plan.md (for what we're building today).
 
 After reading these files, please:
 - Confirm you understand the project goals and learning methodology
@@ -88,9 +88,25 @@ EVALUATION QUESTIONS:
 3. What specific files will we create today (from the session plan)?
 4. What is my top-down methodology approach?
 
-The goal is to jump straight into hands-on prompt engineering and evaluation work. We're building working tools, not just discussing theory.
+CRITICAL: Follow my Development Standards from claude.md:
+- Build in small, testable increments with validation checkpoints
+- Each increment must have clear acceptance criteria and be immediately testable
+- Always pause for feedback before moving to next increment
+- Never build entire systems at once - catch issues early when cheap to fix
 
-Ready to build?"""
+INCREMENTAL DEVELOPMENT WORKFLOW:
+Instead of creating everything at once, you will:
+1. Create basic folder structure and README.md only
+2. PAUSE - Ask for validation before proceeding
+3. Plan the implementation in session_plan.md with specific increments
+4. PAUSE - Get approval on the plan before any coding
+5. Build minimal working version (one simple file that demonstrates core concept)
+6. PAUSE - Test and validate core concept before expanding
+7. Add features incrementally, pausing for feedback after each addition
+
+This prevents mistakes from spiraling into entire scenarios heading in wrong direction. Each pause lets me course-correct early when fixes are cheap.
+
+Ready to build incrementally?"""
     
     return prompt
 
