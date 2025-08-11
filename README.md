@@ -11,35 +11,35 @@ A hands-on learning repository documenting my journey from programming newbie to
 ## Project Structure
 ```
 learning-software-development-lab/
-├── README.md                    # Project overview
-├── claude.md                    # Instructions for Claude Code sessions  
-├── context.md                   # How Anthropic teams use Claude Code
-├── daily-logs/                  # Daily learning sessions and discoveries
-├── scenario-based-learning/     # Hands-on SDLC exercises with Claude Code
+├── README.md                    # My project overview
+├── claude.md                    # My instructions for Claude Code sessions  
+├── context.md                   # Anthropic's team usage patterns for Claude Code
+├── daily-logs/                  # My daily learning sessions and discoveries
+├── scenario-based-learning/     # My hands-on SDLC exercises with Claude Code
 │   ├── 01_scenarios.md         # Anthropic's course repository overview and my 5 learning scenarios
-│   └── 02_scenario_1_requirements_analysis/  # Requirements gathering practice
-│       ├── README.md           # What this scenario teaches
-│       ├── session_plan.md     # Step-by-step implementation
-│       ├── requirements_analysis_prompts.ipynb    # Working code
-│       ├── requirements_evaluation.ipynb          # Testing and metrics
-│       └── data/               # Test results and performance data
+│   └── 02_scenario_1_requirements_analysis/  # My requirements gathering practice
+│       ├── README.md           # My scenario overview
+│       ├── session_plan.md     # My step-by-step implementation plan
+│       ├── requirements_analysis_prompts.ipynb    # My working code
+│       ├── requirements_evaluation.ipynb          # My testing and metrics system
+│       └── data/               # My test results and performance data
 ├── courses/                     # Anthropic's official training materials
-├── session_starter.py          # Loads project context for new sessions
-└── requirements.txt            # Python dependencies
+├── session_starter.py          # My script to load project context for new sessions
+└── requirements.txt            # My Python dependencies
 ```
 
 **What This Repository Is:**
 I'm learning software development by working through real SDLC scenarios. I copied Anthropic's courses to learn AI development, then I build working projects with Claude Code to practice each phase of the software development lifecycle.
 
 **How It Works:**
-- `courses/` = Official Anthropic training materials I study
-- `scenario-based-learning/` = Where I build actual working code for each SDLC phase
-- `daily-logs/` = What I learned and built each day
-- Each scenario has working Jupyter notebooks with real code, not just theory
+- `courses/` = Anthropic's official training materials I study
+- `scenario-based-learning/` = My actual working code for each SDLC phase
+- `daily-logs/` = My learning discoveries and what I built each day
+- Each scenario has my working Jupyter notebooks with real code, not just theory
 
-**Current Progress:**
-✅ **Scenario 1 Complete:** Requirements Analysis - Built working prompt engineering system with evaluation metrics
-🚧 **Next:** Design & Architecture scenario using real-world prompting techniques
+**My Current Progress:**
+✅ **Scenario 1 Complete:** Requirements Analysis - Built my working prompt engineering system with evaluation metrics
+🚧 **Next:** Design & Architecture scenario using Anthropic's real-world prompting techniques
 
 ## Learning Principles
 1. Understand the big picture
