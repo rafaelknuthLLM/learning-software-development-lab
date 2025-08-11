@@ -82,6 +82,33 @@ Think of it as the difference between reading an entire encyclopedia from A to Z
 
 **Bottom Line:** This toolkit allows developer (or AI) to ask targeted questions and get immediate answers, enabling quick mental map building of relevant codebase parts.
 
+### Repository Structure Improvements
+**Problem Identified:** README.md project structure was confusing and didn't clearly explain what the repository actually does.
+
+**Key Issues Found:**
+- References to deleted files (rafael.md, dictionary.md) in claude.md
+- Confusing technical jargon that wouldn't make sense to visitors
+- Didn't clearly explain the core concept: copying Anthropic's courses and building working SDLC scenarios
+- Missing actual working files (.ipynb notebooks, data folders) in structure overview
+
+**Solutions Implemented:**
+- **Directory Restructure:** Renamed `learning-notes/` → `scenario-based-learning/` (more descriptive)
+- **File Rename:** `01_courses.md` → `01_scenarios.md` (better reflects content)
+- **README.md Complete Rewrite:** Applied full-stack developer perspective
+  - Clear explanation: "I'm learning software development by working through real SDLC scenarios"
+  - Showed actual working files (notebooks, data folders, not just theory)
+  - Added progress tracking with visual indicators (✅ ✓ 🚧)
+  - Emphasized practical focus: "working Jupyter notebooks with real code, not just theory"
+- **claude.md Updates:** Removed references to deleted files, updated directory paths
+
+**Developer Insights Applied:**
+- Show actual deliverables people will find (specific .ipynb files, data/ folders)
+- Emphasize working code over documentation
+- Clear progress indicators for ongoing work
+- Simple language avoiding technical bloat
+
+**Result:** Repository now clearly communicates its purpose - someone can immediately understand this is hands-on SDLC learning using Anthropic's courses with Claude Code.
+
 *[Space for additional notes]*
 
 ---

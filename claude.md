@@ -15,7 +15,7 @@ Complete beginner learning software development using SDLC methodology and Claud
 - Always use top-down methodology: README → Structure → Folders → Code
 - Start with big picture before diving into details
 - Use agentic tools (glob, grep) for systematic exploration
-- Document discoveries in learning-notes/
+- Document discoveries in scenario-based-learning/
 
 ## Code Style Preferences
 - Simple, readable code over complex solutions
@@ -25,7 +25,7 @@ Complete beginner learning software development using SDLC methodology and Claud
 ## File Organization
 - claude.md: Instructions for Claude Code (this file)
 - context.md: How Anthropic teams use Claude Code
-- learning-notes/: Structured scenario-based learning following SDLC phases
+- scenario-based-learning/: Hands-on SDLC exercises with Claude Code
 - daily-logs/: Session summaries and discoveries
 - requirements.txt: Python dependencies for Jupyter notebooks
 - session_starter.py: Loads project context at start of each session
