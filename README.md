@@ -1,54 +1,49 @@
-# Beginner's Learning Journey to Software Development
+# Learning Software Development Through Real-World Discovery
 
-A hands-on learning repository documenting my journey from programming newbie to following industry best practices with SDLC and DevOps methodologies.
+I'm learning to code by pretending I'm a new team member at Anthropic. Instead of toy projects, I explore their actual codebase on GitHub to learn how real software development works.
 
-## What You'll Find Here
-- Daily learning logs and discoveries
-- Code examples and small projects
-- Documentation of mistakes and lessons learned
-- Resources and tutorials that helped me
+## How This Works
 
-## Project Structure
-```
-learning-software-development-lab/
-├── README.md                    # My project overview
-├── claude.md                    # My instructions for Claude Code sessions  
-├── context.md                   # Anthropic's team usage patterns for Claude Code
-├── daily-logs/                  # My daily learning sessions and discoveries
-├── scenario-based-learning/     # My hands-on SDLC exercises with Claude Code
-│   ├── 01_scenarios.md         # Anthropic's course repository overview and my 5 learning scenarios
-│   └── 02_scenario_1_requirements_analysis/  # My requirements gathering practice
-│       ├── README.md           # My scenario overview
-│       ├── session_plan.md     # My step-by-step implementation plan
-│       ├── requirements_analysis_prompts.ipynb    # My working code
-│       ├── requirements_evaluation.ipynb          # My testing and metrics system
-│       └── data/               # My test results and performance data
-├── courses/                     # Anthropic's official training materials
-├── session_starter.py          # My script to load project context for new sessions
-└── requirements.txt            # My Python dependencies
-```
+**My Approach:**
+1. I completed Anthropic's courses (API, prompting, evaluations, tools)  
+2. I explore Anthropic's real code on GitHub like a new employee would
+3. I practice software development skills by discovering how they actually build things
+4. I document everything publicly and contribute back to the community
 
-**What This Repository Is:**
-I'm learning software development by working through real SDLC scenarios. I copied Anthropic's courses to learn AI development, then I build working projects with Claude Code to practice each phase of the software development lifecycle.
+**Why This Works:** Real codebases teach you real skills. Artificial tutorials don't show you how companies actually work.
 
-**How It Works:**
-- `courses/` = Anthropic's official training materials I study
-- `scenario-based-learning/` = My actual working code for each SDLC phase
-- `daily-logs/` = My learning discoveries and what I built each day
-- Each scenario has my working Jupyter notebooks with real code, not just theory
+## What You'll Find
 
-**My Current Progress:**
-✅ **Scenario 1 Complete:** Requirements Analysis - Built my working prompt engineering system with evaluation metrics
-🚧 **Next:** Design & Architecture scenario using Anthropic's real-world prompting techniques
+- **scenario-based-learning/** - My 6 learning scenarios based on software development phases
+- **daily-logs/** - What I learned and built each day  
+- **courses/** - Anthropic's official training materials I studied
+- **anthropic-cookbook/** - Examples and guides I'm exploring
 
-## Learning Principles
-1. Understand the big picture
-2. Learn by building in public  
-3. Contribute to the community
-4. Document everything
+## My Learning Scenarios
+
+I created 6 scenarios that follow software development phases:
+
+1. **Requirements Discovery** - What problems does Anthropic's code solve?
+2. **Architecture Discovery** - How do they organize their systems?  
+3. **Implementation Discovery** - What coding practices do they follow?
+4. **Quality Discovery** - How do they test their code?
+5. **Deployment Discovery** - How do they release software?
+6. **Maintenance Discovery** - How do they keep systems running?
+
+Each scenario: I study their course → explore their real code → build tools → share with community
 
 ## Current Status
-🚧 Just getting started! Check the `daily-log/` folder for my latest learning notes.
 
-## Want to Learn Together?
-If you're also starting your coding journey, feel free to follow along or share your own experiences in the discussions.
+🚧 **Just getting started!** Working on Scenario 1 (Requirements Discovery)
+
+Check `daily-logs/` for my latest progress and `scenario-based-learning/01_scenarios.md` for my full plan.
+
+## Learning Principles
+
+- Learn by doing real things, not tutorials
+- Work in public and share discoveries  
+- Contribute to the community early and often
+- Document everything for others to follow
+
+---
+*Following Anthropic's courses and exploring their ecosystem to learn software development the right way.*
