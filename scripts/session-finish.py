@@ -61,7 +61,7 @@ RETROSPECTIVE EVALUATION:
    - Community feedback needed?
 
 Please help me document today's session by:
-- Creating structured daily log entry for {today}
+- Creating structured daily log entry in logs/daily/{today}-session-log.md
 - Highlighting key discoveries and lessons learned
 - Identifying specific improvements for next session
 - Noting any quality gates achieved
@@ -133,6 +133,7 @@ def create_daily_log_template():
     
     template = f"""
 DAILY LOG TEMPLATE - {today}:
+Save this as: logs/daily/{today}-session-log.md
 
 # Session Log: {today}
 

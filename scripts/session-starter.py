@@ -17,10 +17,10 @@ import glob
 
 def find_latest_log():
     """Find the most recent daily log file."""
-    log_pattern = "daily-logs/202*-*-*-session-log.md"
+    log_pattern = "logs/daily/202*-*-*-session-log.md"
     log_files = glob.glob(log_pattern)
     if not log_files:
-        return "daily-logs/ (find latest)"
+        return "logs/daily/ (find latest)"
     return max(log_files)
 
 def get_scenario_name(scenario_num):
@@ -50,13 +50,13 @@ CRITICAL RULES FIRST:
 - No bloat or redundancies in any communication
 
 CONTEXT LOADING STEPS:
-1. Read claude.md to understand my learning approach
+1. Read config/claude-config.md to understand my learning approach
 2. Read README.md to understand the project purpose  
-3. Read scenario-based-learning/01_scenarios.md to understand the 6 discovery scenarios
+3. Read scenario-based-learning/scenarios_overview.md to understand the 6 discovery scenarios
 4. Read {latest_log} to see previous progress
 
 AFTER READING, ANSWER THESE VALIDATION QUESTIONS:
-1. What is my learning approach? (Quote from claude.md)
+1. What is my learning approach? (Quote from config/claude-config.md)
 2. How do I learn software development? (Explain the discovery method)
 3. What is Scenario {scenario_num} about? (Name and focus)
 4. What are the quality gates for discoveries? (Specific percentages)

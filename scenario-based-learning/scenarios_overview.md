@@ -1,5 +1,9 @@
 # SDLC Learning Through Real-World Discovery
 
+**MOVED:** This content has been reorganized into individual scenario folders for better organization.
+
+**New Location:** See `/scenario-based-learning/README.md` for overview and individual scenario folders for detailed content.
+
 **How This Works:** I (the learner) immerse myself as a newbie team member at Anthropic. I learn software development by discovering their actual codebase on GitHub, following SDLC and DevOps best practices.
 
 **My Learning Journey:**

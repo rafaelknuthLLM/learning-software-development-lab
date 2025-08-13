@@ -42,11 +42,13 @@ I'm learning software development by exploring Anthropic's real codebase like a 
 - Focus on practical application, not theoretical concepts
 
 ## File Organization
-- **claude.md:** Instructions for Claude Code sessions (this file)
+- **config/claude-config.md:** Instructions for Claude Code sessions (this file)
 - **scenario-based-learning/:** My 6 SDLC discovery scenarios
-- **daily-logs/:** Session summaries and discoveries
-- **courses/:** Anthropic's training materials I studied
+- **logs/daily/:** Session summaries and discoveries
+- **anthropic-courses/:** Anthropic's training materials I studied
 - **anthropic-cookbook/:** Examples and guides I'm exploring
+- **scripts/:** Session management and automation tools
+- **docs/:** Project documentation and context
 
 ## Current Focus
 Real-world codebase discovery: Learn SDLC by systematically exploring how Anthropic builds software.

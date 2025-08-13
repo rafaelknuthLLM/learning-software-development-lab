@@ -1,0 +1,271 @@
+{
+  "summary": {
+    "total_categories": 6,
+    "analysis_timestamp": "2025-08-13",
+    "base_path": "/home/moin/learning-software-development-lab"
+  },
+  "category_definitions": {
+    "developer_onboarding": {
+      "description": "Learning materials and educational content",
+      "keywords": [
+        "course",
+        "tutorial",
+        "fundamentals",
+        "getting_started",
+        "README",
+        "guide"
+      ]
+    },
+    "integration_tools": {
+      "description": "Tools for integrating Claude with external systems",
+      "keywords": [
+        "tool_use",
+        "api",
+        "sdk",
+        "client",
+        "integration",
+        "third_party"
+      ]
+    },
+    "production_patterns": {
+      "description": "Production-ready patterns and best practices",
+      "keywords": [
+        "real_world",
+        "evaluation",
+        "classification",
+        "rag",
+        "patterns"
+      ]
+    },
+    "multimodal_capabilities": {
+      "description": "Vision and document processing features",
+      "keywords": [
+        "multimodal",
+        "vision",
+        "image",
+        "document",
+        "pdf",
+        "transcribe"
+      ]
+    },
+    "automation_workflows": {
+      "description": "Tools for automating complex business processes",
+      "keywords": [
+        "workflow",
+        "agent",
+        "customer_service",
+        "batch",
+        "automation"
+      ]
+    },
+    "quality_assurance": {
+      "description": "Testing, evaluation, and quality measurement tools",
+      "keywords": [
+        "evaluation",
+        "test",
+        "prompt_evaluations",
+        "building_evals",
+        "quality"
+      ]
+    }
+  },
+  "cookbook_analysis": {
+    "skills": {
+      "general_utilities": [
+        "summarization/ (directory)",
+        "retrieval_augmented_generation/ (directory)",
+        "README.md",
+        "text_to_sql/ (directory)",
+        "contextual-embeddings/ (directory)"
+      ],
+      "production_patterns": [
+        "classification/ (directory)"
+      ]
+    },
+    "tool_use": {
+      "general_utilities": [
+        "tool_choice.ipynb",
+        "parallel_tools_claude_3_7_sonnet.ipynb",
+        "extracting_structured_json.ipynb",
+        "calculator_tool.ipynb",
+        "memory_cookbook.ipynb"
+      ],
+      "integration_tools": [
+        "tool_use_with_pydantic.ipynb"
+      ],
+      "multimodal_capabilities": [
+        "vision_with_tools.ipynb"
+      ],
+      "automation_workflows": [
+        "customer_service_agent.ipynb"
+      ]
+    },
+    "multimodal": {
+      "general_utilities": [
+        "reading_charts_graphs_powerpoints.ipynb"
+      ],
+      "multimodal_capabilities": [
+        "best_practices_for_vision.ipynb",
+        "documents/ (directory)",
+        "how_to_transcribe_text.ipynb"
+      ],
+      "developer_onboarding": [
+        "getting_started_with_vision.ipynb"
+      ],
+      "automation_workflows": [
+        "using_sub_agents.ipynb"
+      ]
+    },
+    "misc": {
+      "general_utilities": [
+        "data/ (directory)",
+        "read_web_pages_with_haiku.ipynb",
+        "mc_qa.ipynb",
+        "metaprompt.ipynb",
+        "illustrated_responses.ipynb",
+        "how_to_enable_json_mode.ipynb",
+        "using_citations.ipynb",
+        "prompt_caching.ipynb",
+        "sampling_past_max_tokens.ipynb",
+        "speculative_prompt_caching.ipynb",
+        "building_moderation_filter.ipynb",
+        "how_to_make_sql_queries.ipynb"
+      ],
+      "multimodal_capabilities": [
+        "pdf_upload_summarization.ipynb"
+      ],
+      "quality_assurance": [
+        "generate_test_cases.ipynb",
+        "building_evals.ipynb"
+      ],
+      "automation_workflows": [
+        "batch_processing.ipynb"
+      ]
+    },
+    "third_party": {
+      "general_utilities": [
+        "LlamaIndex/ (directory)",
+        "Deepgram/ (directory)",
+        "Wikipedia/ (directory)",
+        "MongoDB/ (directory)",
+        "WolframAlpha/ (directory)",
+        "VoyageAI/ (directory)",
+        "Pinecone/ (directory)"
+      ]
+    }
+  },
+  "courses_analysis": {
+    "general_utilities": [
+      "README.md"
+    ],
+    "developer_onboarding": [
+      "anthropic_api_fundamentals/05_Streaming.ipynb",
+      "anthropic_api_fundamentals/01_getting_started.ipynb",
+      "anthropic_api_fundamentals/03_models.ipynb",
+      "anthropic_api_fundamentals/04_parameters.ipynb",
+      "anthropic_api_fundamentals/README.md",
+      "anthropic_api_fundamentals/06_vision.ipynb",
+      "anthropic_api_fundamentals/02_messages_format.ipynb",
+      "prompt_engineering_interactive_tutorial/README.md",
+      "prompt_engineering_interactive_tutorial/Anthropic 1P/10.1_Appendix_Chaining Prompts.ipynb",
+      "prompt_engineering_interactive_tutorial/Anthropic 1P/00_Tutorial_How-To.ipynb",
+      "prompt_engineering_interactive_tutorial/Anthropic 1P/03_Assigning_Roles_Role_Prompting.ipynb",
+      "prompt_engineering_interactive_tutorial/Anthropic 1P/07_Using_Examples_Few-Shot_Prompting.ipynb",
+      "prompt_engineering_interactive_tutorial/Anthropic 1P/10.3_Appendix_Search & Retrieval.ipynb",
+      "prompt_engineering_interactive_tutorial/Anthropic 1P/05_Formatting_Output_and_Speaking_for_Claude.ipynb",
+      "prompt_engineering_interactive_tutorial/Anthropic 1P/04_Separating_Data_and_Instructions.ipynb",
+      "prompt_engineering_interactive_tutorial/Anthropic 1P/09_Complex_Prompts_from_Scratch.ipynb",
+      "prompt_engineering_interactive_tutorial/Anthropic 1P/hints.py",
+      "prompt_engineering_interactive_tutorial/Anthropic 1P/06_Precognition_Thinking_Step_by_Step.ipynb",
+      "prompt_engineering_interactive_tutorial/Anthropic 1P/08_Avoiding_Hallucinations.ipynb",
+      "prompt_engineering_interactive_tutorial/Anthropic 1P/01_Basic_Prompt_Structure.ipynb",
+      "prompt_engineering_interactive_tutorial/Anthropic 1P/10.2_Appendix_Tool Use.ipynb",
+      "prompt_engineering_interactive_tutorial/Anthropic 1P/02_Being_Clear_and_Direct.ipynb",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/CONTRIBUTING.md",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/README.md",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/requirements.txt",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/anthropic/00_Tutorial_How-To.ipynb",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/anthropic/03_Assigning_Roles_Role_Prompting.ipynb",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/anthropic/10_1_Appendix_Chaining_Prompts.ipynb",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/anthropic/07_Using_Examples _Few-Shot_Prompting.ipynb",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/anthropic/05_Formatting_Output_and_Speaking_for_Claude.ipynb",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/anthropic/10_2_Appendix_Tool_Use.ipynb",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/anthropic/04_Separating_Data_and_Instructions.ipynb",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/anthropic/09_Complex_Prompts_from_Scratch.ipynb",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/anthropic/10_4_Appendix_Search_and_Retrieval.ipynb",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/anthropic/06_Precognition_Thinking_Step_by_Step.ipynb",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/anthropic/08_Avoiding_Hallucinations.ipynb",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/anthropic/01_Basic_Prompt_Structure.ipynb",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/anthropic/02_Being_Clear_and_Direct.ipynb",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/anthropic/10_3_Appendix_Empirical_Performance_Evaluations.ipynb",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/boto3/00_Tutorial_How-To.ipynb",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/boto3/03_Assigning_Roles_Role_Prompting.ipynb",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/boto3/07_Using_Examples_Few-Shot_Prompting.ipynb",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/boto3/10_1_Appendix_Chaining_Prompts.ipynb",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/boto3/05_Formatting_Output_and_Speaking_for_Claude.ipynb",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/boto3/10_2_Appendix_Tool_Use.ipynb",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/boto3/04_Separating_Data_and_Instructions.ipynb",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/boto3/10_3_Appendix_Empirical_Performance_Eval.ipynb",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/boto3/09_Complex_Prompts_from_Scratch.ipynb",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/boto3/10_4_Appendix_Search_and_Retrieval.ipynb",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/boto3/06_Precognition_Thinking_Step_by_Step.ipynb",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/boto3/08_Avoiding_Hallucinations.ipynb",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/boto3/01_Basic_Prompt_Structure.ipynb",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/boto3/02_Being_Clear_and_Direct.ipynb",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/utils/__init__.py",
+      "prompt_engineering_interactive_tutorial/AmazonBedrock/utils/hints.py"
+    ],
+    "production_patterns": [
+      "prompt_evaluations/README.md",
+      "real_world_prompting/03_prompt_engineering.ipynb",
+      "real_world_prompting/04_call_summarizer.ipynb",
+      "real_world_prompting/01_prompting_recap.ipynb",
+      "real_world_prompting/README.md",
+      "real_world_prompting/02_medical_prompt.ipynb",
+      "real_world_prompting/05_customer_support_ai.ipynb",
+      "prompt_evaluations/05_prompt_foo_code_graded_animals/prompts.py",
+      "prompt_evaluations/05_prompt_foo_code_graded_animals/lesson.ipynb",
+      "prompt_evaluations/05_prompt_foo_code_graded_animals/README.md",
+      "prompt_evaluations/05_prompt_foo_code_graded_animals/transform.py",
+      "prompt_evaluations/01_intro_to_evals/01_intro_to_evals.ipynb",
+      "prompt_evaluations/07_prompt_foo_custom_graders/lesson.ipynb",
+      "prompt_evaluations/07_prompt_foo_custom_graders/README.md",
+      "prompt_evaluations/07_prompt_foo_custom_graders/count.py",
+      "prompt_evaluations/06_prompt_foo_code_graded_classification/prompts.py",
+      "prompt_evaluations/06_prompt_foo_code_graded_classification/lesson.ipynb",
+      "prompt_evaluations/06_prompt_foo_code_graded_classification/README.md",
+      "prompt_evaluations/09_custom_model_graded_prompt_foo/custom_llm_eval.py",
+      "prompt_evaluations/09_custom_model_graded_prompt_foo/prompts.py",
+      "prompt_evaluations/09_custom_model_graded_prompt_foo/lesson.ipynb",
+      "prompt_evaluations/09_custom_model_graded_prompt_foo/README.md",
+      "prompt_evaluations/02_workbench_evals/02_workbench_evals.ipynb",
+      "prompt_evaluations/03_code_graded_evals/03_code_graded.ipynb",
+      "prompt_evaluations/04_code_graded_classification_evals/04_code_graded_classification_evals.ipynb",
+      "prompt_evaluations/08_prompt_foo_model_graded/lesson.ipynb",
+      "prompt_evaluations/08_prompt_foo_model_graded/README.md",
+      "prompt_evaluations/09_custom_model_graded_prompt_foo/articles/article2.txt",
+      "prompt_evaluations/09_custom_model_graded_prompt_foo/articles/article7.txt",
+      "prompt_evaluations/09_custom_model_graded_prompt_foo/articles/article5.txt",
+      "prompt_evaluations/09_custom_model_graded_prompt_foo/articles/article4.txt",
+      "prompt_evaluations/09_custom_model_graded_prompt_foo/articles/article6.txt",
+      "prompt_evaluations/09_custom_model_graded_prompt_foo/articles/article3.txt",
+      "prompt_evaluations/09_custom_model_graded_prompt_foo/articles/article8.txt",
+      "prompt_evaluations/09_custom_model_graded_prompt_foo/articles/article1.txt"
+    ],
+    "integration_tools": [
+      "tool_use/06_chatbot_with_multiple_tools.ipynb",
+      "tool_use/01_tool_use_overview.ipynb",
+      "tool_use/04_complete_workflow.ipynb",
+      "tool_use/05_tool_choice.ipynb",
+      "tool_use/README.md",
+      "tool_use/02_your_first_simple_tool.ipynb",
+      "tool_use/03_structured_outputs.ipynb"
+    ]
+  },
+  "coverage_metrics": {
+    "total_files_analyzed": 141,
+    "categorized_files": 110,
+    "coverage_percentage": 78.0,
+    "meets_80_percent_goal": false
+  }
+}

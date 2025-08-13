@@ -15,9 +15,11 @@ I'm learning to code by pretending I'm a new team member at Anthropic. Instead o
 ## What You'll Find
 
 - **scenario-based-learning/** - My 6 learning scenarios based on software development phases
-- **daily-logs/** - What I learned and built each day  
-- **courses/** - Anthropic's official training materials I studied
+- **logs/daily/** - What I learned and built each day  
+- **anthropic-courses/** - Anthropic's official training materials I studied
 - **anthropic-cookbook/** - Examples and guides I'm exploring
+- **config/** - Project configuration and Claude Code settings
+- **scripts/** - Session management and automation tools
 
 ## My Learning Scenarios
 
@@ -36,7 +38,7 @@ Each scenario: I study their course → explore their real code → build tools 
 
 🚧 **Just getting started!** Working on Scenario 1 (Requirements Discovery)
 
-Check `daily-logs/` for my latest progress and `scenario-based-learning/01_scenarios.md` for my full plan.
+Check `logs/daily/` for my latest progress and `scenario-based-learning/scenarios_overview.md` for my full plan.
 
 ## Learning Principles
 
