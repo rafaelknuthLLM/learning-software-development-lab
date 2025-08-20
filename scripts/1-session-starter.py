@@ -6,14 +6,16 @@ CRITICAL: This script enforces incremental development with mandatory approval g
 Every change requires human approval to prevent rushing to wrong solutions.
 
 USAGE:
-    python session_starter.py --scenario 1    # Start Requirements Discovery
-    python session_starter.py -s 2            # Start Architecture Discovery
+    python 1-session-starter.py --scenario 1    # Start Requirements Discovery
+    python 1-session-starter.py -s 2            # Start Architecture Discovery
+    python 1-session-starter.py --scenario 1 --model opus  # Use Opus 4.1
 """
 
 import os
 import argparse
 from datetime import datetime
 import glob
+import json
 
 def find_latest_log():
     """Find the most recent daily log file."""
@@ -22,6 +24,28 @@ def find_latest_log():
     if not log_files:
         return "logs/daily/ (find latest)"
     return max(log_files)
+
+def detect_current_progress():
+    """Detect current analytical progress from latest log."""
+    latest_log = find_latest_log()
+    if not os.path.exists(latest_log):
+        return "No previous progress detected"
+    
+    try:
+        with open(latest_log, 'r') as f:
+            content = f.read()
+        
+        # Check for progress indicators
+        if "Question 1.1 Completed" in content:
+            return "Question 1.1 completed - ready for Question 1.2"
+        elif "Scenario 1" in content and "Deep Dive" in content:
+            return "Scenario 1 deep dive analysis in progress"
+        elif "Requirements Discovery" in content:
+            return "Scenario 1 (Requirements Discovery) in progress"
+        else:
+            return "Session log found but progress unclear"
+    except:
+        return "Could not read progress from log file"
 
 def get_scenario_name(scenario_num):
     """Map scenario number to discovery focus."""
@@ -35,10 +59,47 @@ def get_scenario_name(scenario_num):
     }
     return scenarios.get(scenario_num, f"Unknown Scenario {scenario_num}")
 
-def generate_context_prompt(scenario_num):
-    """Generate context-loading prompt with mandatory approval gates."""
+def get_model_commands(model_choice):
+    """Generate Claude Code startup commands for different models."""
+    commands = {
+        'sonnet': {
+            'name': 'Claude Sonnet 4 (Default)',
+            'setup': [
+                'cd /home/moin/learning-software-development-lab',
+                'npm install -g @anthropic-ai/claude-code',
+                'claude'
+            ]
+        },
+        'opus': {
+            'name': 'Claude Opus 4.1 (Advanced Reasoning)',
+            'setup': [
+                'cd /home/moin/learning-software-development-lab', 
+                'npm install -g @anthropic-ai/claude-code',
+                'claude --model claude-opus-4-1-20250805'
+            ]
+        }
+    }
+    return commands.get(model_choice, commands['sonnet'])
+
+def generate_context_prompt(scenario_num, current_progress):
+    """Generate context-loading prompt with current progress awareness."""
     latest_log = find_latest_log()
     scenario_name = get_scenario_name(scenario_num)
+    
+    # Add progress-specific instructions
+    progress_context = ""
+    if "Question 1.1 completed" in current_progress:
+        progress_context = f"""
+CURRENT STATUS: {current_progress}
+5. Read scenario-based-learning/01-requirements-discovery/analysis/scenario1-deep-dive-analysis.ipynb to see completed analysis
+6. You should be ready to continue with Question 1.2: "How did we handle multi-purpose files?"
+"""
+    elif "deep dive" in current_progress.lower():
+        progress_context = f"""
+CURRENT STATUS: {current_progress}
+5. Read scenario-based-learning/01-requirements-discovery/analysis/scenario1-deep-dive-analysis.ipynb to see current analysis
+6. Continue with the next analytical question in the sequence
+"""
     
     prompt = f"""Hi Claude Code! I need you to understand my real-world discovery learning project.
 
@@ -53,7 +114,7 @@ CONTEXT LOADING STEPS:
 1. Read config/claude-config.md to understand my learning approach
 2. Read README.md to understand the project purpose  
 3. Read scenario-based-learning/scenarios_overview.md to understand the 6 discovery scenarios
-4. Read {latest_log} to see previous progress
+4. Read {latest_log} to see previous progress{progress_context}
 
 AFTER READING, ANSWER THESE VALIDATION QUESTIONS:
 1. What is my learning approach? (Quote from config/claude-config.md)
@@ -135,9 +196,11 @@ Claude truly understands the project and commits to working incrementally.
     return checklist
 
 def main():
-    parser = argparse.ArgumentParser(description="Start discovery learning session")
+    parser = argparse.ArgumentParser(description="Start discovery learning session with model selection")
     parser.add_argument("--scenario", "-s", type=int, required=True, 
                        help="Scenario number (1-6)")
+    parser.add_argument("--model", "-m", choices=['sonnet', 'opus'], default='sonnet',
+                       help="Claude model: 'sonnet' (default) or 'opus' (advanced reasoning)")
     
     args = parser.parse_args()
     
@@ -146,15 +209,25 @@ def main():
         return
     
     scenario_name = get_scenario_name(args.scenario)
+    current_progress = detect_current_progress()
+    model_info = get_model_commands(args.model)
     
     print("="*60)
     print(f"SESSION STARTER - SCENARIO {args.scenario}")
     print(f"{scenario_name}")
+    print(f"Model: {model_info['name']}")
     print("="*60)
     
-    prompt = generate_context_prompt(args.scenario)
-    print("\nCONTEXT PROMPT (copy to Claude Code):")
+    print(f"\nCURRENT PROGRESS: {current_progress}")
+    
+    print(f"\nCLAUDE CODE STARTUP COMMANDS:")
     print("-" * 40)
+    for i, cmd in enumerate(model_info['setup'], 1):
+        print(f"{i}. {cmd}")
+    
+    print(f"\nCONTEXT PROMPT (copy to Claude Code after startup):")
+    print("-" * 40)
+    prompt = generate_context_prompt(args.scenario, current_progress)
     print(prompt)
     
     print("\n" + "="*60)
@@ -164,10 +237,11 @@ def main():
     print(checklist)
     
     print("\nNEXT STEPS:")
-    print("1. Copy prompt above to Claude Code")
-    print("2. Check all boxes in validation checklist")
-    print("3. Only proceed if all boxes checked")
-    print("4. Work incrementally with approval gates")
+    print("1. Run Claude Code startup commands above")
+    print("2. Copy context prompt to new Claude Code session") 
+    print("3. Validate Claude's understanding with checklist")
+    print("4. Only proceed if validation score ≥15/18")
+    print("5. Work incrementally with approval gates")
     print("="*60)
 
 if __name__ == "__main__":
