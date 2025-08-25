@@ -12,6 +12,11 @@ I'm learning software development by exploring Anthropic's real codebase like a 
 - Commit frequently: `git add -A && git commit -m "description" && git push`
 - Always validate before moving to next step
 
+**Jupyter Notebooks:**
+- Prepare for commit: `python scripts/notebook-prepare.py notebook.ipynb`
+- Validate all: `python scripts/validate-notebooks.py`
+- Re-execute: `jupyter-nbconvert --execute --inplace notebook.ipynb`
+
 ## Learning Approach
 - Explore real codebases, not artificial tutorials
 - Learn by building and contributing to Anthropic's community
@@ -27,6 +32,14 @@ I'm learning software development by exploring Anthropic's real codebase like a 
 - Document everything for future team members to follow
 - Create shareable tools and insights, not just personal learning
 - Update documentation with each increment
+
+## Jupyter Notebook Standards
+**CRITICAL:** Notebooks edited via Claude Code may not render on GitHub
+- **Problem:** NotebookEdit creates subtly different cell structures
+- **Solution:** Always re-execute with Jupyter before committing
+- **Command:** `python scripts/notebook-prepare.py notebook.ipynb`
+- **Documentation:** See `/docs/notebook-standards.md` for full guidelines
+- **Validation:** Run `python scripts/validate-notebooks.py` before pushing
 
 ## Quality Assurance Protocol
 - **Validation:** Verify discoveries against official Anthropic documentation
