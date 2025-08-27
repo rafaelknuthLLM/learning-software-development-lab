@@ -1,12 +1,12 @@
 # Learning Software Development Through Real-World Discovery
 
-I'm learning to code by pretending I'm a new team member at Anthropic. Instead of toy projects, I explore their actual codebase on GitHub to learn how real software development works.
+I'm learning to code by exploring real-world open-source projects. I'm starting with the ecosystems of Anthropic and Reuven Cohen to learn how real software development works.
 
 ## How This Works
 
 **My Approach:**
 1. I completed Anthropic's courses (API, prompting, evaluations, tools)  
-2. I explore Anthropic's real code on GitHub like a new employee would
+2. I explore the real code of modern technology leaders like Anthropic and Reuven Cohen
 3. I practice software development skills by discovering how they actually build things
 4. I document everything publicly and contribute back to the community
 
@@ -25,14 +25,14 @@ I'm learning to code by pretending I'm a new team member at Anthropic. Instead o
 
 I created 6 scenarios that follow software development phases:
 
-1. **Requirements Discovery** - What problems does Anthropic's code solve?
-2. **Architecture Discovery** - How do they organize their systems?  
-3. **Implementation Discovery** - What coding practices do they follow?
-4. **Quality Discovery** - How do they test their code?
-5. **Deployment Discovery** - How do they release software?
-6. **Maintenance Discovery** - How do they keep systems running?
+1. **Requirements Discovery** - What problems does the code solve?
+2. **Architecture Discovery** - How are the systems organized?  
+3. **Implementation Discovery** - What coding practices are followed?
+4. **Quality Discovery** - How is the code tested?
+5. **Deployment Discovery** - How is software released?
+6. **Maintenance Discovery** - How are systems kept running?
 
-Each scenario: I study their course → explore their real code → build tools → share with community
+Each scenario: I study a course → explore real code → build tools → share with community
 
 ## Current Status
 
@@ -48,4 +48,4 @@ Check `logs/daily/` for my latest progress and `scenario-based-learning/scenario
 - Document everything for others to follow
 
 ---
-*Following Anthropic's courses and exploring their ecosystem to learn software development the right way.*
+*Exploring real-world code to learn software development the right way.*

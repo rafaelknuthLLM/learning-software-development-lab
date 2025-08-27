@@ -1,0 +1,15 @@
+[submodule "reuven-cohen-projects/CLAUDE-FLOW"]
+	path = reuven-cohen-projects/CLAUDE-FLOW
+	url = https://github.com/ruvnet/CLAUDE-FLOW.git
+[submodule "reuven-cohen-projects/RUV-DEV"]
+	path = reuven-cohen-projects/RUV-DEV
+	url = https://github.com/ruvnet/RUV-DEV.git
+[submodule "reuven-cohen-projects/FACT"]
+	path = reuven-cohen-projects/FACT
+	url = https://github.com/ruvnet/FACT.git
+[submodule "reuven-cohen-projects/FLOW-NEXUS"]
+	path = reuven-cohen-projects/FLOW-NEXUS
+	url = https://github.com/ruvnet/FLOW-NEXUS.git
+[submodule "reuven-cohen-projects/VIBECAST"]
+	path = reuven-cohen-projects/VIBECAST
+	url = https://github.com/ruvnet/VIBECAST.git
