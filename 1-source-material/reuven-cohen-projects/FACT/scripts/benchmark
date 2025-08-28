@@ -1,0 +1,9 @@
+#!/bin/bash
+# FACT Benchmark Runner
+# Simple executable script for running FACT benchmarks
+
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Run the standalone benchmark runner with all arguments passed through
+python3 "$SCRIPT_DIR/run_benchmarks_standalone.py" "$@"

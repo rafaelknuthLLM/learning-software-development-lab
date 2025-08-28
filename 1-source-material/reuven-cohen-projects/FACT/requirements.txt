@@ -1,0 +1,24 @@
+# FACT System Dependencies
+# Core dependencies
+anthropic==0.19.1
+litellm==1.0.0
+aiohttp==3.9.5
+python-dotenv==1.0.1
+pydantic==2.8.2
+
+# Database
+aiosqlite==0.20.0
+
+# Testing dependencies
+pytest==8.3.2
+pytest-asyncio==0.24.0
+pytest-cov==5.0.0
+pytest-mock==3.14.0
+
+# Development dependencies
+black==24.8.0
+flake8==7.1.0
+mypy==1.11.0
+
+# Monitoring and logging
+structlog==24.1.0

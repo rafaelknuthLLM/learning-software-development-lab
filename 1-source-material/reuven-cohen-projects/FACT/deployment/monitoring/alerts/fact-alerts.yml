@@ -1,0 +1,196 @@
+# FACT System Alert Rules
+groups:
+  - name: fact-application
+    rules:
+      # Application Health Alerts
+      - alert: FACTApplicationDown
+        expr: up{job="fact-app"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: fact-app
+        annotations:
+          summary: "FACT application is down"
+          description: "FACT application has been down for more than 1 minute"
+
+      - alert: FACTHighErrorRate
+        expr: rate(fact_http_requests_total{status=~"5.."}[5m]) / rate(fact_http_requests_total[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+          service: fact-app
+        annotations:
+          summary: "High error rate in FACT application"
+          description: "Error rate is {{ $value | humanizePercentage }} for more than 5 minutes"
+
+      # Performance Alerts
+      - alert: FACTHighResponseTime
+        expr: histogram_quantile(0.95, rate(fact_http_request_duration_seconds_bucket[5m])) > 0.5
+        for: 5m
+        labels:
+          severity: warning
+          service: fact-app
+        annotations:
+          summary: "High response time in FACT application"
+          description: "95th percentile response time is {{ $value }}s for more than 5 minutes"
+
+      - alert: FACTCacheHitRateLow
+        expr: rate(fact_cache_hits[5m]) / (rate(fact_cache_hits[5m]) + rate(fact_cache_misses[5m])) < 0.8
+        for: 10m
+        labels:
+          severity: warning
+          service: fact-cache
+        annotations:
+          summary: "Low cache hit rate"
+          description: "Cache hit rate is {{ $value | humanizePercentage }} for more than 10 minutes"
+
+      - alert: FACTMemoryUsageHigh
+        expr: (fact_memory_usage_bytes / fact_memory_limit_bytes) > 0.9
+        for: 5m
+        labels:
+          severity: critical
+          service: fact-app
+        annotations:
+          summary: "High memory usage"
+          description: "Memory usage is {{ $value | humanizePercentage }} for more than 5 minutes"
+
+  - name: fact-infrastructure
+    rules:
+      # Database Alerts
+      - alert: PostgreSQLDown
+        expr: up{job="postgres"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: postgres
+        annotations:
+          summary: "PostgreSQL is down"
+          description: "PostgreSQL database has been down for more than 1 minute"
+
+      - alert: PostgreSQLHighConnections
+        expr: pg_stat_database_numbackends / pg_settings_max_connections > 0.8
+        for: 5m
+        labels:
+          severity: warning
+          service: postgres
+        annotations:
+          summary: "High number of PostgreSQL connections"
+          description: "PostgreSQL connection usage is {{ $value | humanizePercentage }}"
+
+      # Redis Alerts
+      - alert: RedisDown
+        expr: up{job="redis"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: redis
+        annotations:
+          summary: "Redis is down"
+          description: "Redis cache has been down for more than 1 minute"
+
+      - alert: RedisMemoryUsageHigh
+        expr: redis_memory_used_bytes / redis_memory_max_bytes > 0.9
+        for: 5m
+        labels:
+          severity: warning
+          service: redis
+        annotations:
+          summary: "High Redis memory usage"
+          description: "Redis memory usage is {{ $value | humanizePercentage }}"
+
+      # System Resource Alerts
+      - alert: HighCPUUsage
+        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+          service: system
+        annotations:
+          summary: "High CPU usage"
+          description: "CPU usage is {{ $value }}% on {{ $labels.instance }}"
+
+      - alert: HighMemoryUsage
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) > 0.9
+        for: 5m
+        labels:
+          severity: critical
+          service: system
+        annotations:
+          summary: "High memory usage"
+          description: "Memory usage is {{ $value | humanizePercentage }} on {{ $labels.instance }}"
+
+      - alert: DiskSpaceLow
+        expr: (1 - (node_filesystem_free_bytes / node_filesystem_size_bytes)) > 0.85
+        for: 5m
+        labels:
+          severity: warning
+          service: system
+        annotations:
+          summary: "Low disk space"
+          description: "Disk usage is {{ $value | humanizePercentage }} on {{ $labels.instance }}"
+
+  - name: fact-security
+    rules:
+      # Security Alerts
+      - alert: FACTUnauthorizedAccess
+        expr: rate(fact_http_requests_total{status="401"}[5m]) > 10
+        for: 2m
+        labels:
+          severity: warning
+          service: fact-security
+        annotations:
+          summary: "High number of unauthorized access attempts"
+          description: "{{ $value }} unauthorized access attempts per second"
+
+      - alert: FACTRateLimitExceeded
+        expr: rate(fact_http_requests_total{status="429"}[5m]) > 5
+        for: 2m
+        labels:
+          severity: warning
+          service: fact-security
+        annotations:
+          summary: "Rate limit exceeded"
+          description: "{{ $value }} rate limit violations per second"
+
+      - alert: FACTSuspiciousActivity
+        expr: rate(fact_security_events_total{type="suspicious"}[5m]) > 1
+        for: 1m
+        labels:
+          severity: critical
+          service: fact-security
+        annotations:
+          summary: "Suspicious activity detected"
+          description: "{{ $value }} suspicious events per second detected"
+
+  - name: fact-business
+    rules:
+      # Business Logic Alerts
+      - alert: FACTQueryFailureRateHigh
+        expr: rate(fact_queries_failed_total[5m]) / rate(fact_queries_total[5m]) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+          service: fact-business
+        annotations:
+          summary: "High query failure rate"
+          description: "Query failure rate is {{ $value | humanizePercentage }}"
+
+      - alert: FACTToolExecutionFailures
+        expr: rate(fact_tool_executions_failed_total[5m]) > 5
+        for: 3m
+        labels:
+          severity: warning
+          service: fact-tools
+        annotations:
+          summary: "High tool execution failure rate"
+          description: "{{ $value }} tool execution failures per second"
+
+      - alert: FACTAPIQuotaExceeded
+        expr: fact_api_quota_usage > 0.9
+        for: 1m
+        labels:
+          severity: critical
+          service: fact-api
+        annotations:
+          summary: "API quota nearly exceeded"
+          description: "API quota usage is {{ $value | humanizePercentage }}"

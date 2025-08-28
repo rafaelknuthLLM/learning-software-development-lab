@@ -1,0 +1,372 @@
+# FACT System CI/CD Pipeline
+name: FACT CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  release:
+    types: [ published ]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  PYTHON_VERSION: "3.11"
+
+jobs:
+  # Security and Quality Checks
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r requirements-security.txt
+
+      - name: Run Bandit security scan
+        run: |
+          bandit -r src/ -f json -o security-report.json
+          bandit -r src/ --severity-level medium
+
+      - name: Run Safety check
+        run: safety check --json --output safety-report.json
+
+      - name: Upload security artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: security-reports
+          path: |
+            security-report.json
+            safety-report.json
+
+  # Code Quality and Linting
+  code-quality:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r requirements-test.txt
+
+      - name: Run Black formatting check
+        run: black --check --diff src/ tests/
+
+      - name: Run flake8 linting
+        run: flake8 src/ tests/ --max-line-length=100
+
+      - name: Run mypy type checking
+        run: mypy src/ --ignore-missing-imports
+
+      - name: Run isort import sorting check
+        run: isort --check-only --diff src/ tests/
+
+  # Unit and Integration Tests
+  test:
+    name: Test Suite
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    
+    services:
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_DB: fact_test
+          POSTGRES_USER: fact_test
+          POSTGRES_PASSWORD: fact_test_password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r requirements-test.txt
+
+      - name: Set up test environment
+        run: |
+          cp .env.example .env
+          echo "POSTGRES_URL=postgresql://fact_test:fact_test_password@localhost:5432/fact_test" >> .env
+          echo "REDIS_URL=redis://localhost:6379" >> .env
+
+      - name: Run unit tests
+        run: |
+          python -m pytest tests/unit/ -v \
+            --cov=src \
+            --cov-report=xml \
+            --cov-report=html \
+            --junitxml=test-results.xml
+
+      - name: Run integration tests
+        run: |
+          python -m pytest tests/integration/ -v \
+            --junitxml=integration-test-results.xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: true
+
+      - name: Upload test artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results-${{ matrix.python-version }}
+          path: |
+            test-results.xml
+            integration-test-results.xml
+            htmlcov/
+
+  # Performance Tests
+  performance:
+    name: Performance Tests
+    runs-on: ubuntu-latest
+    needs: [test]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r requirements-test.txt
+
+      - name: Run performance benchmarks
+        run: |
+          python -m pytest tests/performance/ -v \
+            --benchmark-only \
+            --benchmark-json=benchmark-results.json
+
+      - name: Upload benchmark results
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-results
+          path: benchmark-results.json
+
+  # Build Docker Image
+  build:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    needs: [security-scan, code-quality, test]
+    outputs:
+      image-digest: ${{ steps.build.outputs.digest }}
+      image-tag: ${{ steps.meta.outputs.tags }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push Docker image
+        id: build
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: deployment/docker/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64,linux/arm64
+
+  # Deploy to Staging
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [build]
+    if: github.ref == 'refs/heads/develop'
+    environment:
+      name: staging
+      url: https://staging.fact-system.com
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure kubectl
+        uses: azure/k8s-set-context@v3
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBE_CONFIG_STAGING }}
+
+      - name: Deploy to staging
+        run: |
+          # Update image tag in deployment
+          sed -i "s|image: .*|image: ${{ needs.build.outputs.image-tag }}|g" deployment/kubernetes/deployment.yaml
+          
+          # Apply Kubernetes manifests
+          kubectl apply -f deployment/kubernetes/namespace.yaml
+          kubectl apply -f deployment/kubernetes/secrets.yaml
+          kubectl apply -f deployment/kubernetes/configmap.yaml
+          kubectl apply -f deployment/kubernetes/deployment.yaml
+          kubectl apply -f deployment/kubernetes/service.yaml
+          kubectl apply -f deployment/kubernetes/ingress.yaml
+          
+          # Wait for deployment to complete
+          kubectl rollout status deployment/fact-app -n fact-system --timeout=600s
+
+      - name: Run smoke tests
+        run: |
+          # Wait for service to be ready
+          sleep 30
+          
+          # Run basic health checks
+          kubectl exec -n fact-system deployment/fact-app -- curl -f http://localhost:8000/health
+          
+          # Run smoke tests
+          python scripts/smoke_tests.py --environment staging
+
+  # Deploy to Production
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [build, deploy-staging]
+    if: github.event_name == 'release'
+    environment:
+      name: production
+      url: https://fact-system.com
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure kubectl
+        uses: azure/k8s-set-context@v3
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBE_CONFIG_PRODUCTION }}
+
+      - name: Deploy to production
+        run: |
+          # Update image tag in deployment
+          sed -i "s|image: .*|image: ${{ needs.build.outputs.image-tag }}|g" deployment/kubernetes/deployment.yaml
+          
+          # Apply Kubernetes manifests with rolling update
+          kubectl apply -f deployment/kubernetes/namespace.yaml
+          kubectl apply -f deployment/kubernetes/secrets.yaml
+          kubectl apply -f deployment/kubernetes/configmap.yaml
+          kubectl apply -f deployment/kubernetes/deployment.yaml
+          
+          # Wait for deployment to complete
+          kubectl rollout status deployment/fact-app -n fact-system --timeout=900s
+
+      - name: Run production validation
+        run: |
+          # Wait for service to be ready
+          sleep 60
+          
+          # Run comprehensive validation
+          python scripts/production_validation.py
+          
+          # Send deployment notification
+          curl -X POST ${{ secrets.SLACK_WEBHOOK_URL }} \
+            -H 'Content-type: application/json' \
+            --data '{"text":"✅ FACT System successfully deployed to production - Version: ${{ github.ref_name }}"}'
+
+  # Security Scanning of Built Image
+  container-security:
+    name: Container Security Scan
+    runs-on: ubuntu-latest
+    needs: [build]
+    if: always()
+    
+    steps:
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ needs.build.outputs.image-tag }}
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'

@@ -1,0 +1,128 @@
+# FACT System Development Docker Compose Configuration
+version: '3.8'
+
+services:
+  fact-app:
+    build:
+      context: ../..
+      dockerfile: deployment/docker/Dockerfile
+      target: development
+    container_name: fact-development
+    ports:
+      - "8000:8000"
+    environment:
+      - NODE_ENV=development
+      - LOG_LEVEL=DEBUG
+      - DATABASE_PATH=/app/data/fact_demo.db
+    volumes:
+      - ../../src:/app/src:ro
+      - ../../data:/app/data
+      - ../../logs:/app/logs
+      - ../../output:/app/output
+      - ../../.env:/app/.env:ro
+    networks:
+      - fact-network
+    depends_on:
+      - fact-redis
+      - fact-postgres
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  fact-redis:
+    image: redis:7-alpine
+    container_name: fact-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - fact-redis-data:/data
+      - ./redis.conf:/usr/local/etc/redis/redis.conf:ro
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - fact-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  fact-postgres:
+    image: postgres:15-alpine
+    container_name: fact-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: fact_db
+      POSTGRES_USER: fact_user
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-fact_dev_password}
+      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256"
+    volumes:
+      - fact-postgres-data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+    networks:
+      - fact-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fact_user -d fact_db"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  fact-monitoring:
+    image: prom/prometheus:latest
+    container_name: fact-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ../monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - fact-prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    networks:
+      - fact-network
+    restart: unless-stopped
+
+  fact-grafana:
+    image: grafana/grafana:latest
+    container_name: fact-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin123}
+      GF_USERS_ALLOW_SIGN_UP: false
+    volumes:
+      - fact-grafana-data:/var/lib/grafana
+      - ../monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ../monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    networks:
+      - fact-network
+    depends_on:
+      - fact-monitoring
+    restart: unless-stopped
+
+networks:
+  fact-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  fact-redis-data:
+    driver: local
+  fact-postgres-data:
+    driver: local
+  fact-prometheus-data:
+    driver: local
+  fact-grafana-data:
+    driver: local

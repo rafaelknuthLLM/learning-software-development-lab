@@ -1,0 +1,16 @@
+{
+  "name": "test-app",
+  "version": "1.0.0",
+  "description": "Simple Node.js application that logs 'test' to console",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node tests/smoke/test.js"
+  },
+  "keywords": ["test", "console", "node"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.3.1"
+  }
+}

@@ -1,0 +1,13 @@
+FACT Demo Benchmark Summary
+==================================================
+
+Timestamp: 20250524_164007
+Iterations: 100
+Overall Pass: False
+
+Performance Targets:
+------------------------------
+cache_hit_latency: PASS (42.5)
+cache_miss_latency: PASS (127.2)
+cost_reduction: FAIL (0.0)
+cache_hit_rate: FAIL (21.0)

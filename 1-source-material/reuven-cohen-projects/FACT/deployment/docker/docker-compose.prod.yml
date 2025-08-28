@@ -1,0 +1,228 @@
+# FACT System Production Docker Compose Configuration
+version: '3.8'
+
+services:
+  fact-app:
+    build:
+      context: ../..
+      dockerfile: deployment/docker/Dockerfile
+      target: production
+    image: fact-system:${VERSION:-latest}
+    container_name: fact-production
+    ports:
+      - "80:8000"
+    environment:
+      - NODE_ENV=production
+      - LOG_LEVEL=INFO
+      - DATABASE_PATH=/app/data/fact_prod.db
+      - REDIS_URL=redis://fact-redis:6379
+      - POSTGRES_URL=postgresql://fact_user:${POSTGRES_PASSWORD}@fact-postgres:5432/fact_db
+    volumes:
+      - fact-app-data:/app/data
+      - fact-app-logs:/app/logs
+      - fact-app-output:/app/output
+    env_file:
+      - ../../.env.production
+    networks:
+      - fact-network
+    depends_on:
+      fact-redis:
+        condition: service_healthy
+      fact-postgres:
+        condition: service_healthy
+    restart: always
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  fact-redis:
+    image: redis:7-alpine
+    container_name: fact-redis-prod
+    ports:
+      - "6379:6379"
+    volumes:
+      - fact-redis-data:/data
+      - ./redis-prod.conf:/usr/local/etc/redis/redis.conf:ro
+    command: redis-server /usr/local/etc/redis/redis.conf
+    networks:
+      - fact-network
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  fact-postgres:
+    image: postgres:15-alpine
+    container_name: fact-postgres-prod
+    environment:
+      POSTGRES_DB: fact_db
+      POSTGRES_USER: fact_user
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256"
+    volumes:
+      - fact-postgres-data:/var/lib/postgresql/data
+      - ./init-db-prod.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+    networks:
+      - fact-network
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fact_user -d fact_db"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  fact-nginx:
+    image: nginx:alpine
+    container_name: fact-nginx
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+      - fact-nginx-logs:/var/log/nginx
+    networks:
+      - fact-network
+    depends_on:
+      - fact-app
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  fact-monitoring:
+    image: prom/prometheus:latest
+    container_name: fact-prometheus-prod
+    volumes:
+      - ../monitoring/prometheus-prod.yml:/etc/prometheus/prometheus.yml:ro
+      - fact-prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.enable-lifecycle'
+      - '--web.enable-admin-api'
+    networks:
+      - fact-network
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  fact-grafana:
+    image: grafana/grafana:latest
+    container_name: fact-grafana-prod
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD}
+      GF_USERS_ALLOW_SIGN_UP: false
+      GF_SECURITY_COOKIE_SECURE: true
+      GF_SECURITY_STRICT_TRANSPORT_SECURITY: true
+    volumes:
+      - fact-grafana-data:/var/lib/grafana
+      - ../monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ../monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    networks:
+      - fact-network
+    depends_on:
+      - fact-monitoring
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+networks:
+  fact-network:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: fact-prod
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16
+
+volumes:
+  fact-app-data:
+    driver: local
+  fact-app-logs:
+    driver: local
+  fact-app-output:
+    driver: local
+  fact-redis-data:
+    driver: local
+  fact-postgres-data:
+    driver: local
+  fact-prometheus-data:
+    driver: local
+  fact-grafana-data:
+    driver: local
+  fact-nginx-logs:
+    driver: local

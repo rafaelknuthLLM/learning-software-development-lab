@@ -1,0 +1,165 @@
+# Global Configuration for Arcade.dev Examples
+# This file contains default settings that can be overridden by environment variables
+
+# Arcade.dev API Configuration
+arcade:
+  api_key: ${ARCADE_API_KEY}
+  api_url: ${ARCADE_API_URL:-https://api.arcade.dev}
+  api_version: ${ARCADE_API_VERSION:-v1}
+  timeout: ${ARCADE_TIMEOUT:-30}
+  max_retries: ${ARCADE_MAX_RETRIES:-3}
+  retry_delay: ${ARCADE_RETRY_DELAY:-1}
+  
+  # Rate limiting settings
+  rate_limit:
+    requests: ${ARCADE_RATE_LIMIT_REQUESTS:-100}
+    window: ${ARCADE_RATE_LIMIT_WINDOW:-60}
+    
+  # Feature flags
+  features:
+    code_analysis: ${ARCADE_CODE_ANALYSIS_ENABLED:-true}
+    test_generation: ${ARCADE_TEST_GENERATION_ENABLED:-true}
+    documentation: ${ARCADE_DOCUMENTATION_ENABLED:-true}
+    refactoring: ${ARCADE_REFACTORING_ENABLED:-true}
+    bug_detection: ${ARCADE_BUG_DETECTION_ENABLED:-true}
+    performance_analysis: ${ARCADE_PERFORMANCE_ANALYSIS_ENABLED:-true}
+    
+  # Performance settings
+  performance:
+    max_analysis_size: ${ARCADE_MAX_ANALYSIS_SIZE:-1000000}
+    parallel_requests: ${ARCADE_PARALLEL_REQUESTS:-5}
+    batch_size: ${ARCADE_BATCH_SIZE:-10}
+
+# FACT Framework Configuration
+fact:
+  # Logging settings
+  logging:
+    level: ${FACT_LOG_LEVEL:-INFO}
+    format: ${FACT_LOG_FORMAT:-json}
+    file: ${FACT_LOG_FILE:-logs/fact.log}
+    
+  # Cache settings
+  cache:
+    enabled: ${FACT_CACHE_ENABLED:-true}
+    type: ${FACT_CACHE_TYPE:-memory}
+    ttl: ${FACT_CACHE_TTL:-3600}
+    max_size: ${FACT_CACHE_MAX_SIZE:-1000}
+    
+    # Redis settings (if cache type is redis)
+    redis:
+      host: ${FACT_CACHE_HOST:-localhost}
+      port: ${FACT_CACHE_PORT:-6379}
+      db: ${FACT_CACHE_DB:-0}
+      password: ${FACT_CACHE_PASSWORD:-}
+      
+  # Security settings
+  security:
+    secret_key: ${FACT_SECRET_KEY}
+    encryption_key: ${FACT_ENCRYPTION_KEY}
+    jwt_secret: ${FACT_JWT_SECRET}
+
+# Examples Configuration
+examples:
+  # Output settings
+  output:
+    directory: ${EXAMPLES_OUTPUT_DIR:-./output}
+    save_results: ${EXAMPLES_SAVE_RESULTS:-true}
+    verbose: ${EXAMPLES_VERBOSE:-true}
+    
+  # Demo settings
+  demo:
+    interactive: ${EXAMPLES_INTERACTIVE:-true}
+    auto_run: ${EXAMPLES_AUTO_RUN:-false}
+    delay_between_steps: ${EXAMPLES_DELAY:-2}
+    
+  # Testing settings
+  testing:
+    environment: ${TEST_ENVIRONMENT:-development}
+    data_dir: ${TEST_DATA_DIR:-test_data}
+    output_dir: ${TEST_OUTPUT_DIR:-test_output}
+    cleanup: ${TEST_CLEANUP:-true}
+
+# Development Configuration
+development:
+  mode: ${DEVELOPMENT_MODE:-false}
+  debug: ${DEBUG_ENABLED:-false}
+  profiling: ${PROFILING_ENABLED:-false}
+  auto_reload: ${AUTO_RELOAD:-false}
+  watch_files: ${WATCH_FILES:-true}
+
+# Deployment Configuration
+deployment:
+  environment: ${ENVIRONMENT:-development}
+  stage: ${DEPLOYMENT_STAGE:-local}
+  
+  # Monitoring settings
+  monitoring:
+    metrics_enabled: ${METRICS_ENABLED:-false}
+    tracing_enabled: ${TRACING_ENABLED:-false}
+    health_check_enabled: ${HEALTH_CHECK_ENABLED:-true}
+    
+  # External services
+  services:
+    webhook_url: ${WEBHOOK_URL}
+    notification_service_url: ${NOTIFICATION_SERVICE_URL}
+
+# Integration Settings
+integrations:
+  # Version control
+  github:
+    token: ${GITHUB_TOKEN}
+    enabled: ${GITHUB_INTEGRATION_ENABLED:-false}
+    
+  gitlab:
+    token: ${GITLAB_TOKEN}
+    enabled: ${GITLAB_INTEGRATION_ENABLED:-false}
+    
+  # Communication
+  slack:
+    webhook_url: ${SLACK_WEBHOOK_URL}
+    enabled: ${SLACK_INTEGRATION_ENABLED:-false}
+    
+  # CI/CD
+  ci_cd:
+    integration_enabled: ${CI_INTEGRATION_ENABLED:-false}
+    auto_deployment_enabled: ${AUTO_DEPLOYMENT_ENABLED:-false}
+    quality_gate_enabled: ${QUALITY_GATE_ENABLED:-true}
+
+# Performance Tuning
+performance:
+  # Worker settings
+  workers:
+    max_workers: ${MAX_WORKERS:-4}
+    thread_pool_size: ${THREAD_POOL_SIZE:-10}
+    connection_pool_size: ${CONNECTION_POOL_SIZE:-20}
+    
+  # Timeout settings
+  timeouts:
+    http: ${HTTP_TIMEOUT:-30}
+    database: ${DB_TIMEOUT:-10}
+    cache: ${CACHE_TIMEOUT:-5}
+    
+  # Memory limits
+  memory:
+    max_usage: ${MAX_MEMORY_USAGE:-1024}
+    max_file_size: ${MAX_FILE_SIZE:-50}
+
+# Security Configuration
+security:
+  # SSL/TLS settings
+  ssl:
+    verify: ${SSL_VERIFY:-true}
+    cert_path: ${SSL_CERT_PATH:-certs/cert.pem}
+    key_path: ${SSL_KEY_PATH:-certs/key.pem}
+    
+  # API security
+  api:
+    key_header: ${API_KEY_HEADER:-X-API-Key}
+    cors_origins: ${CORS_ORIGINS:-http://localhost:3000,http://localhost:8000}
+    allowed_hosts: ${ALLOWED_HOSTS:-localhost,127.0.0.1}
+    
+  # Session settings
+  session:
+    timeout: ${SESSION_TIMEOUT:-3600}
+    secure: ${SESSION_SECURE:-true}
+    httponly: ${SESSION_HTTPONLY:-true}
