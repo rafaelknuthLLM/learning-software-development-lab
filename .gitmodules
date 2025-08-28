@@ -13,3 +13,24 @@
 [submodule "reuven-cohen-projects/VIBECAST"]
 	path = reuven-cohen-projects/VIBECAST
 	url = https://github.com/ruvnet/VIBECAST.git
+[submodule "1-source-material/anthropic-cookbook"]
+	path = 1-source-material/anthropic-cookbook
+	url = https://github.com/anthropics/anthropic-cookbook.git
+[submodule "1-source-material/anthropic-courses"]
+	path = 1-source-material/anthropic-courses
+	url = https://github.com/anthropics/courses.git
+[submodule "1-source-material/reuven-cohen-projects/CLAUDE-FLOW"]
+	path = 1-source-material/reuven-cohen-projects/CLAUDE-FLOW
+	url = https://github.com/ruvnet/CLAUDE-FLOW.git
+[submodule "1-source-material/reuven-cohen-projects/RUV-DEV"]
+	path = 1-source-material/reuven-cohen-projects/RUV-DEV
+	url = https://github.com/ruvnet/RUV-DEV.git
+[submodule "1-source-material/reuven-cohen-projects/FACT"]
+	path = 1-source-material/reuven-cohen-projects/FACT
+	url = https://github.com/ruvnet/FACT.git
+[submodule "1-source-material/reuven-cohen-projects/FLOW-NEXUS"]
+	path = 1-source-material/reuven-cohen-projects/FLOW-NEXUS
+	url = https://github.com/ruvnet/FLOW-NEXUS.git
+[submodule "1-source-material/reuven-cohen-projects/VIBECAST"]
+	path = 1-source-material/reuven-cohen-projects/VIBECAST
+	url = https://github.com/ruvnet/VIBECAST.git
