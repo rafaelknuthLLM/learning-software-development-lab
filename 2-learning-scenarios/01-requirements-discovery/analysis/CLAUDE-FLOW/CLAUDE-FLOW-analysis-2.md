@@ -105,3 +105,17 @@ After tracing the request through the routing layer, we arrived at the final des
     4.  **Response:** Finally, the controller sends a response back to the user with a `201 Created` status code, a success message, the newly created user's data (with sensitive information like the password hash removed), and the `accessToken`.
 
 *   **Conclusion:** The controller is the end of the line for the request-response cycle. It interacts with the database (via the Model), executes the core logic of the application, and sends a formatted response back to the client. Our analysis of this file completes a full, foundational tour of the generated backend code's architecture, from the initial server setup to the final business logic execution.
+
+### 3.4. Analysis of the Model Layer (`src/models/User.js`)
+
+This file defines the "Model" for our user data, which acts as the secure "filing cabinet" and rulebook for all user-related information. It uses the **Mongoose** library, the standard for data modeling with MongoDB in a Node.js environment.
+
+*   **The Schema (The Rulebook):** The `userSchema` is the blueprint for user data. It defines every field and its validation rules, such as `username` must be unique and `email` must be a valid format. A key security feature here is `select: false` on the `password` field, which prevents it from being sent to the client in database queries.
+
+*   **The Pre-Save Hook (Data Security Guard):** The file uses `userSchema.pre('save', ...)` to define a function that automatically runs before any user data is saved. This function's critical job is to **hash** the password using `bcrypt`. Hashing is a one-way process that turns a password into a secure, random-looking string. This ensures the application never stores plain-text passwords, which is a fundamental security best practice.
+
+*   **Custom Methods (Official Tools):** The model is extended with custom helper functions that are used by the controllers:
+    *   `comparePassword`: This method securely compares a password provided during login against the stored hash in the database. It allows for password verification without ever needing to decrypt the stored password.
+    *   `generateAuthToken`: This method creates the JSON Web Token (JWT) that acts as a user's temporary "key card" for accessing protected parts of the API.
+
+*   **Conclusion:** The Model is the foundation of the application's data layer. It centralizes all data structure, validation, and security logic in one place. This allows the rest of the application, like the controllers, to interact with data in a simple, secure, and consistent way, completing the end-to-end architecture of the generated code.
