@@ -17,35 +17,33 @@ from datetime import datetime
 import glob
 import json
 
-def find_latest_log():
-    """Find the most recent daily log file."""
-    log_pattern = "logs/daily/202*-*-*-session-log.md"
-    log_files = glob.glob(log_pattern)
-    if not log_files:
-        return "logs/daily/ (find latest)"
-    return max(log_files)
-
-def detect_current_progress():
-    """Detect current analytical progress from latest log."""
-    latest_log = find_latest_log()
-    if not os.path.exists(latest_log):
-        return "No previous progress detected"
+def detect_current_progress(scenario_num):
+    """Detects progress by checking for files in the scenario's analysis and deliverables directories."""
+    scenario_path = f"2-learning-scenarios/{str(scenario_num).zfill(2)}-*"
+    scenario_dirs = glob.glob(scenario_path)
     
-    try:
-        with open(latest_log, 'r') as f:
-            content = f.read()
-        
-        # Check for progress indicators
-        if "Question 1.1 Completed" in content:
-            return "Question 1.1 completed - ready for Question 1.2"
-        elif "Scenario 1" in content and "Deep Dive" in content:
-            return "Scenario 1 deep dive analysis in progress"
-        elif "Requirements Discovery" in content:
-            return "Scenario 1 (Requirements Discovery) in progress"
-        else:
-            return "Session log found but progress unclear"
-    except:
-        return "Could not read progress from log file"
+    if not scenario_dirs:
+        return "Scenario directory not found."
+
+    scenario_dir = scenario_dirs[0]
+    analysis_dir = os.path.join(scenario_dir, "analysis")
+    deliverables_dir = os.path.join(scenario_dir, "deliverables")
+
+    found_files = []
+    for dir_path in [analysis_dir, deliverables_dir]:
+        if os.path.exists(dir_path) and os.path.isdir(dir_path):
+            for item in os.listdir(dir_path):
+                # Ignore hidden files like .gitkeep
+                if not item.startswith('.'):
+                    found_files.append(os.path.join(dir_path, item))
+
+    if not found_files:
+        return "No previous progress detected. Starting fresh."
+    else:
+        progress_summary = "Scenario in progress. Found the following files:\n"
+        for f in found_files:
+            progress_summary += f"  - {f}\n"
+        return progress_summary
 
 def get_scenario_name(scenario_num):
     """Map scenario number to discovery focus."""
@@ -82,26 +80,17 @@ def get_model_commands(model_choice):
     return commands.get(model_choice, commands['sonnet'])
 
 def generate_context_prompt(scenario_num, current_progress):
-    """Generate context-loading prompt with current progress awareness."""
-    latest_log = find_latest_log()
+    """Generate context-loading prompt."""
     scenario_name = get_scenario_name(scenario_num)
     
-    # Add progress-specific instructions
-    progress_context = ""
-    if "Question 1.1 completed" in current_progress:
-        progress_context = f"""
-CURRENT STATUS: {current_progress}
-5. Read scenario-based-learning/01-requirements-discovery/analysis/scenario1-deep-dive-analysis.ipynb to see completed analysis
-6. You should be ready to continue with Question 1.2: "How did we handle multi-purpose files?"
-"""
-    elif "deep dive" in current_progress.lower():
-        progress_context = f"""
-CURRENT STATUS: {current_progress}
-5. Read scenario-based-learning/01-requirements-discovery/analysis/scenario1-deep-dive-analysis.ipynb to see current analysis
-6. Continue with the next analytical question in the sequence
-"""
-    
-    prompt = f"""Hi Claude Code! I need you to understand my real-world discovery learning project.
+    # If progress exists, the prompt can be simpler.
+    # The user will see the file list in the "CURRENT PROGRESS" section.
+    if "No previous progress detected" not in current_progress:
+        prompt_intro = "Hi Claude Code! Let's continue our work on this discovery learning project."
+    else:
+        prompt_intro = "Hi Claude Code! I need you to understand my real-world discovery learning project."
+
+    prompt = f"""{prompt_intro}
 
 CRITICAL RULES FIRST:
 - You MUST get my approval before making ANY changes to files
@@ -114,7 +103,7 @@ CONTEXT LOADING STEPS:
 1. Read config/claude-config.md to understand my learning approach
 2. Read README.md to understand the project purpose  
 3. Read scenario-based-learning/scenarios_overview.md to understand the 6 discovery scenarios
-4. Read {latest_log} to see previous progress{progress_context}
+4. Review the 'CURRENT PROGRESS' section above to understand existing work.
 
 AFTER READING, ANSWER THESE VALIDATION QUESTIONS:
 1. What is my learning approach? (Quote from config/claude-config.md)
@@ -209,7 +198,7 @@ def main():
         return
     
     scenario_name = get_scenario_name(args.scenario)
-    current_progress = detect_current_progress()
+    current_progress = detect_current_progress(args.scenario)
     model_info = get_model_commands(args.model)
     
     print("="*60)
