@@ -1,6 +1,5 @@
 const { body, param, query, validationResult } = require('express-validator');
 const { createError } = require('./errorHandler');
-const mongoose = require('mongoose');
 
 // Validation error handler
 const handleValidationErrors = (req, res, next) => {
@@ -20,10 +19,6 @@ const handleValidationErrors = (req, res, next) => {
 };
 
 // Custom validators
-const isObjectId = (value) => {
-  return mongoose.Types.ObjectId.isValid(value);
-};
-
 const isStrongPassword = (value) => {
   const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/;
   return strongPasswordRegex.test(value);
@@ -214,33 +209,6 @@ const postValidation = {
   ]
 };
 
-// Parameter validation
-const paramValidation = {
-  objectId: [
-    param('id')
-      .custom(isObjectId)
-      .withMessage('Invalid ID format'),
-    
-    handleValidationErrors
-  ],
-
-  userId: [
-    param('userId')
-      .custom(isObjectId)
-      .withMessage('Invalid user ID format'),
-    
-    handleValidationErrors
-  ],
-
-  postId: [
-    param('postId')
-      .custom(isObjectId)
-      .withMessage('Invalid post ID format'),
-    
-    handleValidationErrors
-  ]
-};
-
 // Query validation
 const queryValidation = {
   pagination: [
@@ -287,8 +255,6 @@ module.exports = {
   handleValidationErrors,
   userValidation,
   postValidation,
-  paramValidation,
   queryValidation,
-  isObjectId,
   isStrongPassword
 };

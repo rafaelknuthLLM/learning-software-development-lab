@@ -1,3 +1,4 @@
+console.log("Starting server.js...");
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -7,9 +8,18 @@ const cookieParser = require('cookie-parser');
 require('dotenv').config();
 require('express-async-errors');
 
-const { connectDatabase } = require('../config/database');
+console.log("Requiring database config...");
+const supabase = require('../config/database');
+console.log("Database config required.");
+
+console.log("Requiring error handler...");
 const { globalErrorHandler, notFound } = require('./middleware/errorHandler');
+console.log("Error handler required.");
+
+console.log("Requiring routes...");
 const routes = require('./routes');
+console.log("Routes required.");
+
 const winston = require('winston');
 
 // Create Express app
@@ -178,12 +188,7 @@ const gracefulShutdown = (signal) => {
   
   server.close((err) => {
     winston.info('HTTP server closed.');
-    
-    // Close database connection
-    require('mongoose').connection.close((err) => {
-      winston.info('MongoDB connection closed.');
-      process.exit(err ? 1 : 0);
-    });
+    process.exit(err ? 1 : 0);
   });
 };
 
@@ -207,13 +212,14 @@ process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
 
+console.log("Calling startServer...");
 const startServer = async () => {
   try {
     // Connect to database
-    await connectDatabase();
-    
+    console.log("Inside startServer, before listen...");
     // Start server
     const server = app.listen(PORT, HOST, () => {
+      console.log("Server is listening.");
       winston.info(`Server running on http://${HOST}:${PORT}`);
       winston.info(`Environment: ${process.env.NODE_ENV || 'development'}`);
       winston.info(`API Version: ${API_VERSION}`);
