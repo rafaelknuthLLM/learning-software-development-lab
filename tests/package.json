@@ -1,0 +1,92 @@
+{
+  "name": "rest-api-test-suite",
+  "version": "1.0.0",
+  "description": "Comprehensive test suite for REST API with 90%+ coverage",
+  "main": "index.js",
+  "scripts": {
+    "test": "NODE_ENV=test jest",
+    "test:unit": "NODE_ENV=test jest tests/unit --coverage",
+    "test:integration": "NODE_ENV=test jest tests/integration --runInBand --coverage",
+    "test:security": "NODE_ENV=test jest tests/security --runInBand --coverage",
+    "test:performance": "NODE_ENV=test jest tests/performance --runInBand --detectOpenHandles",
+    "test:watch": "NODE_ENV=test jest --watch",
+    "test:debug": "NODE_ENV=test node --inspect-brk node_modules/.bin/jest --runInBand",
+    "test:coverage": "NODE_ENV=test jest --coverage --coverageReporters=text-lcov | coveralls",
+    "test:ci": "NODE_ENV=test jest --ci --coverage --watchAll=false",
+    "test:parallel": "NODE_ENV=test jest --maxWorkers=4",
+    "test:verbose": "NODE_ENV=test jest --verbose",
+    "test:silent": "NODE_ENV=test jest --silent",
+    "test:bail": "NODE_ENV=test jest --bail",
+    "test:changed": "NODE_ENV=test jest --onlyChanged",
+    "test:related": "NODE_ENV=test jest --findRelatedTests",
+    "lint": "eslint tests/**/*.js",
+    "lint:fix": "eslint tests/**/*.js --fix",
+    "clean": "rimraf coverage .nyc_output",
+    "pretest": "npm run clean",
+    "posttest": "npm run generate:report",
+    "generate:report": "node scripts/generateTestReport.js",
+    "benchmark": "NODE_ENV=test node scripts/runBenchmarks.js"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": ["./setup.js"],
+    "collectCoverageFrom": [
+      "../src/**/*.js",
+      "../server.js",
+      "!../src/seeders/**",
+      "!../src/utils/swagger.js",
+      "!**/node_modules/**"
+    ],
+    "coverageDirectory": "./coverage",
+    "coverageReporters": [
+      "text",
+      "lcov", 
+      "html",
+      "json-summary",
+      "clover"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 85,
+        "functions": 85,
+        "lines": 90,
+        "statements": 90
+      }
+    },
+    "testMatch": [
+      "**/tests/**/*.test.js"
+    ],
+    "verbose": true,
+    "bail": 0,
+    "maxWorkers": 1,
+    "forceExit": true,
+    "clearMocks": true,
+    "resetMocks": true,
+    "restoreMocks": true,
+    "testTimeout": 30000,
+    "detectOpenHandles": true,
+    "collectCoverage": true
+  },
+  "keywords": [
+    "testing",
+    "jest",
+    "supertest", 
+    "rest-api",
+    "integration-tests",
+    "unit-tests",
+    "security-tests",
+    "performance-tests"
+  ],
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3",
+    "mongodb-memory-server": "^9.0.1",
+    "@faker-js/faker": "^8.2.0",
+    "eslint": "^8.52.0",
+    "rimraf": "^5.0.5",
+    "coveralls": "^3.1.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

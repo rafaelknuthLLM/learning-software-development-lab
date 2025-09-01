@@ -2,13 +2,8 @@
 """
 Session Starter Script for Real-World Discovery Learning
 
-CRITICAL: This script enforces incremental development with mandatory approval gates.
-Every change requires human approval to prevent rushing to wrong solutions.
-
-USAGE:
-    python 1-session-starter.py --scenario 1    # Start Requirements Discovery
-    python 1-session-starter.py -s 2            # Start Architecture Discovery
-    python 1-session-starter.py --scenario 1 --model opus  # Use Opus 4.1
+v2.0: This script generates a comprehensive briefing to provide the AI assistant
+with deep context about the project's evolution and current state.
 """
 
 import os
@@ -16,40 +11,76 @@ import argparse
 from datetime import datetime
 import glob
 import json
+import subprocess
 
-def detect_current_progress(scenario_num):
-    """Detects progress by checking for files in the scenario's analysis and deliverables directories."""
-    scenario_path = f"2-learning-scenarios/{str(scenario_num).zfill(2)}-*"
-    scenario_dirs = glob.glob(scenario_path)
-    
-    if not scenario_dirs:
-        return "Scenario directory not found."
+def get_project_evolution():
+    """Gets the last 5 git commits to show project evolution."""
+    try:
+        result = subprocess.run(
+            ['git', 'log', '-n', '5', '--pretty=format:- %h %s (%cr)'] ,
+            capture_output=True, text=True, check=True
+        )
+        return result.stdout.strip()
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return "Could not retrieve git log. Is git installed and in a repo?"
 
-    scenario_dir = scenario_dirs[0]
-    analysis_dir = os.path.join(scenario_dir, "analysis")
-    deliverables_dir = os.path.join(scenario_dir, "deliverables")
+def get_last_session_endpoint():
+    """Finds the latest daily log and returns the last few lines."""
+    try:
+        log_dir = "4-project-management/logs-and-debriefs/daily/"
+        list_of_files = glob.glob(os.path.join(log_dir, '*.md'))
+        if not list_of_files:
+            return "No daily logs found."
+        
+        latest_file = max(list_of_files, key=os.path.getctime)
+        with open(latest_file, 'r') as f:
+            lines = f.readlines()
+        
+        # Return the last 20 lines to get the session's end context
+        return f"From: {os.path.basename(latest_file)}\n...\n{''.join(lines[-20:])}"
+    except Exception as e:
+        return f"Error reading logs: {e}"
 
-    found_files = []
-    for dir_path in [analysis_dir, deliverables_dir]:
-        if os.path.exists(dir_path) and os.path.isdir(dir_path):
-            for item in os.listdir(dir_path):
-                # Ignore hidden files like .gitkeep
-                if not item.startswith('.'):
-                    found_files.append(os.path.join(dir_path, item))
+def get_workspace_state(scenario_num):
+    """Gets uncommitted git changes and recently modified files."""
+    state_parts = []
+    # Git status
+    try:
+        result = subprocess.run(
+            ['git', 'status', '--porcelain'],
+            capture_output=True, text=True, check=True
+        )
+        if result.stdout.strip():
+            state_parts.append("**Uncommitted Changes:**\n" + result.stdout.strip())
+        else:
+            state_parts.append("**Uncommitted Changes:**\nClean workspace.")
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        state_parts.append("**Uncommitted Changes:**\nCould not retrieve git status.")
 
-    if not found_files:
-        return "No previous progress detected. Starting fresh."
-    else:
-        progress_summary = "Scenario in progress. Found the following files:\n"
-        for f in found_files:
-            progress_summary += f"  - {f}\n"
-        return progress_summary
+    # Recently modified files in scenario
+    try:
+        scenario_path_pattern = f"2-learning-scenarios/{str(scenario_num).zfill(2)}-*"
+        scenario_dirs = glob.glob(scenario_path_pattern)
+        if scenario_dirs:
+            scenario_dir = scenario_dirs[0]
+            files = [os.path.join(dp, f) for dp, dn, fn in os.walk(scenario_dir) for f in fn]
+            if files:
+                files.sort(key=os.path.getmtime, reverse=True)
+                recent_files_str = "\n".join([
+                    f"- {os.path.basename(f)} (modified: {datetime.fromtimestamp(os.path.getmtime(f)).strftime('%Y-%m-%d %H:%M:%S')})"
+                    for f in files[:3]
+                ])
+                state_parts.append("**Recently Modified Scenario Files:**\n" + recent_files_str)
+    except Exception as e:
+        state_parts.append(f"**Recently Modified Scenario Files:**\nCould not retrieve recent files: {e}")
+        
+    return "\n\n".join(state_parts)
 
 def get_scenario_name(scenario_num):
     """Map scenario number to discovery focus."""
     scenarios = {
         1: "Requirements Discovery through Ecosystem Analysis",
-        2: "Architecture Discovery through Pattern Analysis", 
+        2: "Architecture Discovery through Pattern Analysis",
         3: "Implementation Discovery through Code Analysis",
         4: "Quality Discovery through Testing Analysis",
         5: "Deployment Discovery through DevOps Analysis",
@@ -57,53 +88,19 @@ def get_scenario_name(scenario_num):
     }
     return scenarios.get(scenario_num, f"Unknown Scenario {scenario_num}")
 
-def get_model_commands(model_choice):
-    """Generate Claude Code startup commands for different models."""
-    commands = {
-        'sonnet': {
-            'name': 'Claude Sonnet 4 (Default)',
-            'setup': [
-                'cd /home/moin/learning-software-development-lab',
-                'npm install -g @anthropic-ai/claude-code',
-                'claude'
-            ]
-        },
-        'opus': {
-            'name': 'Claude Opus 4.1 (Advanced Reasoning)',
-            'setup': [
-                'cd /home/moin/learning-software-development-lab', 
-                'npm install -g @anthropic-ai/claude-code',
-                'claude --model claude-opus-4-1-20250805'
-            ]
-        }
-    }
-    return commands.get(model_choice, commands['sonnet'])
-
-def generate_context_prompt(scenario_num, current_progress):
-    """Generate context-loading prompt."""
+def generate_context_prompt(scenario_num):
+    """Generate the original context-loading prompt for the AI."""
     scenario_name = get_scenario_name(scenario_num)
-    
-    # If progress exists, the prompt can be simpler.
-    # The user will see the file list in the "CURRENT PROGRESS" section.
-    if "No previous progress detected" not in current_progress:
-        prompt_intro = "Hi Claude Code! Let's continue our work on this discovery learning project."
-    else:
-        prompt_intro = "Hi Claude Code! I need you to understand my real-world discovery learning project."
-
-    prompt = f"""{prompt_intro}
-
-CRITICAL RULES FIRST:
+    prompt = f"""CRITICAL RULES FIRST:
 - You MUST get my approval before making ANY changes to files
 - Work in tiny increments - one small change at a time
-- Ask "Should I proceed?" before each step
+- Ask \"Should I proceed?\" before each step
 - Speak clearly - no AI jargon, understandable to first-time repo visitors
 - No bloat or redundancies in any communication
 
 CONTEXT LOADING STEPS:
 1. Read config/claude-config.md to understand my learning approach
-2. Read README.md to understand the project purpose  
-3. Read scenario-based-learning/scenarios_overview.md to understand the 6 discovery scenarios
-4. Review the 'CURRENT PROGRESS' section above to understand existing work.
+2. Read README.md to understand the project purpose
 
 AFTER READING, ANSWER THESE VALIDATION QUESTIONS:
 1. What is my learning approach? (Quote from config/claude-config.md)
@@ -111,127 +108,48 @@ AFTER READING, ANSWER THESE VALIDATION QUESTIONS:
 3. What is Scenario {scenario_num} about? (Name and focus)
 4. What are the quality gates for discoveries? (Specific percentages)
 
-COMMUNICATION REQUIREMENTS:
-- Write like you're explaining to someone seeing my repo for the first time
-- Use simple, clear language
-- No "As an AI" or artificial phrasing
-- Focus on practical next steps
-
-INCREMENTAL WORK PROTOCOL:
-- Propose ONE small action at a time
-- Wait for my "yes" before proceeding
-- If I say "no," ask clarifying questions
-- Never build multiple things simultaneously
-
 CURRENT SCENARIO: {scenario_name}
 
 Ready to start with tiny, approved increments?"""
-    
     return prompt
 
-def create_evaluation_checklist(scenario_num):
-    """Create validation checklist with scoring system for Claude's understanding."""
-    scenario_name = get_scenario_name(scenario_num)
-    
-    checklist = f"""
-VALIDATION SCORING - Scenario {scenario_num} (0-18 points):
-
-□ Real-world discovery explanation (0-3 points):
-  3 = Clearly explains exploring Anthropic's actual codebase like new team member
-  2 = Understands real codebase focus but missing some details  
-  1 = Partial understanding of discovery approach
-  0 = Wrong or missing explanation
-
-□ Scenario identification accuracy (0-3 points):
-  3 = Correctly identifies as: {scenario_name}
-  2 = Close but minor inaccuracies in scenario description
-  1 = Partial understanding of scenario focus
-  0 = Wrong scenario or missing identification
-
-□ Quality gates knowledge (0-3 points):
-  3 = Mentions specific percentages (80% coverage, 90% accuracy)
-  2 = Understands quality gates concept but imprecise numbers
-  1 = Vague reference to quality standards
-  0 = No mention of quality gates
-
-□ Incremental work understanding (0-3 points):
-  3 = Explicitly commits to approval-before-action workflow
-  2 = Understands incremental approach but less specific
-  1 = Mentions working in steps but unclear on approval
-  0 = No evidence of incremental understanding
-
-□ Clear communication (0-3 points):
-  3 = Simple language, no AI speak, first-timer friendly
-  2 = Mostly clear with minor jargon
-  1 = Some unclear or artificial phrasing
-  0 = Heavy AI speak or confusing language
-
-□ Approval gate compliance (0-3 points):
-  3 = Explicitly asks "Should I proceed?" or similar before acting
-  2 = Shows understanding but doesn't explicitly ask permission
-  1 = Mentions needing approval but unclear commitment
-  0 = No evidence of approval-seeking behavior
-
-TOTAL SCORE: ___/18
-
-PASS THRESHOLD: 15/18 (83%)
-- Score 15-18: Approve Claude to begin incremental work
-- Score 12-14: Address gaps before starting work  
-- Score 0-11: Restart with clearer context loading
-
-REMEMBER: The goal is preventing another "biggest fuckup" by ensuring
-Claude truly understands the project and commits to working incrementally.
-"""
-    return checklist
-
 def main():
-    parser = argparse.ArgumentParser(description="Start discovery learning session with model selection")
-    parser.add_argument("--scenario", "-s", type=int, required=True, 
-                       help="Scenario number (1-6)")
-    parser.add_argument("--model", "-m", choices=['sonnet', 'opus'], default='sonnet',
-                       help="Claude model: 'sonnet' (default) or 'opus' (advanced reasoning)")
-    
+    parser = argparse.ArgumentParser(description="Start discovery learning session with a comprehensive briefing for the AI assistant.")
+    parser.add_argument("--scenario", "-s", type=int, required=True, help="Scenario number (1-6)")
     args = parser.parse_args()
-    
-    if args.scenario < 1 or args.scenario > 6:
+
+    if not 1 <= args.scenario <= 6:
         print("Error: Scenario must be between 1 and 6")
         return
-    
+
     scenario_name = get_scenario_name(args.scenario)
-    current_progress = detect_current_progress(args.scenario)
-    model_info = get_model_commands(args.model)
     
-    print("="*60)
-    print(f"SESSION STARTER - SCENARIO {args.scenario}")
-    print(f"{scenario_name}")
-    print(f"Model: {model_info['name']}")
-    print("="*60)
-    
-    print(f"\nCURRENT PROGRESS: {current_progress}")
-    
-    print(f"\nCLAUDE CODE STARTUP COMMANDS:")
-    print("-" * 40)
-    for i, cmd in enumerate(model_info['setup'], 1):
-        print(f"{i}. {cmd}")
-    
-    print(f"\nCONTEXT PROMPT (copy to Claude Code after startup):")
-    print("-" * 40)
-    prompt = generate_context_prompt(args.scenario, current_progress)
-    print(prompt)
+    # --- GENERATE THE NEW COMPREHENSIVE BRIEFING ---
+    print("# SESSION BRIEFING")
+    print("\n## 1. Mission Context")
+    print(f"- **Scenario:** {args.scenario} - {scenario_name}")
+    print(f"- **Objective:** Systematically analyze the target ecosystem to discover and document its practices.")
+
+    print("\n## 2. Project Evolution (Recent Commits)")
+    print(get_project_evolution())
+
+    print("\n## 3. Last Session Endpoint (from latest daily log)")
+    print(get_last_session_endpoint())
+
+    print("\n## 4. Current Workspace State")
+    print(get_workspace_state(args.scenario))
     
     print("\n" + "="*60)
-    checklist = create_evaluation_checklist(args.scenario)
-    print("VALIDATION CHECKLIST:")
-    print("-" * 40)
-    print(checklist)
-    
-    print("\nNEXT STEPS:")
-    print("1. Run Claude Code startup commands above")
-    print("2. Copy context prompt to new Claude Code session") 
-    print("3. Validate Claude's understanding with checklist")
-    print("4. Only proceed if validation score ≥15/18")
-    print("5. Work incrementally with approval gates")
+    print("AI ASSISTANT INSTRUCTIONS")
     print("="*60)
+    print("\n**Your first task is to rephrase the 'SESSION BRIEFING' above in your own words to confirm you have a deep understanding of the project's evolution and current status. Then, await further instructions.**")
+
+    # --- OLD CONTEXT FOR REFERENCE (can be removed later) ---
+    # print("\nCONTEXT PROMPT (for reference):")
+    # print("-" * 40)
+    # print(generate_context_prompt(args.scenario))
+    # print("-" * 40)
+
 
 if __name__ == "__main__":
     main()
