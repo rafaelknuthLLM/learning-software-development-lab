@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2025 Learning Software Development Lab
+Copyright (c) 2021 Supabase, Inc. and contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,29 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-## Third-Party Content Attribution
-
-This project includes content from Anthropic PBC under their respective licenses:
-
-### Anthropic Cookbook
-- Location: `anthropic-cookbook/`
-- Source: https://github.com/anthropics/anthropic-cookbook
-- License: See `anthropic-cookbook/LICENSE`
-
-### Anthropic Courses  
-- Location: `anthropic-courses/`
-- Source: https://github.com/anthropics/courses
-- License: See `anthropic-courses/LICENSE`
-
-### Proprietary Content
-All content in the following directories represents original work for this project:
-- `scenario-based-learning/`
-- `config/`
-- `docs/`
-- `scripts/`  
-- `logs/`
-
-This proprietary content is licensed under the MIT License above, while third-party content retains its original licensing.

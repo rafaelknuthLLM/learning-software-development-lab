@@ -1,5 +1,5 @@
 const { body, param, query, validationResult } = require('express-validator');
-const { createError } = require('../utils/errorHandler');
+const { createError } = require('./errorHandler');
 const mongoose = require('mongoose');
 
 // Validation error handler
