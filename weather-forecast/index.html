@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Modern weather forecast application with real-time data from Open-Meteo API">
+    <meta name="keywords" content="weather, forecast, temperature, humidity, wind">
+    <meta name="author" content="Weather App Team">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Weather Forecast App">
+    <meta property="og:description" content="Get accurate weather forecasts for your location">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://your-domain.com">
+    <meta property="og:image" content="./assets/images/weather-app-preview.png">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Weather Forecast App">
+    <meta name="twitter:description" content="Get accurate weather forecasts for your location">
+    <meta name="twitter:image" content="./assets/images/weather-app-preview.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="./assets/icons/weather-icon.svg">
+    <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#2563eb">
+
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://api.open-meteo.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="./src/css/style.css">
+
+    <title>Weather Forecast - Real-time Weather Data</title>
+</head>
+<body>
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Header -->
+    <header class="header" role="banner">
+        <nav class="nav" role="navigation" aria-label="Main navigation">
+            <div class="nav__container">
+                <div class="nav__brand">
+                    <img src="./assets/icons/weather-icon.svg" alt="Weather App" class="nav__logo">
+                    <h1 class="nav__title">WeatherNow</h1>
+                </div>
+                <button class="nav__toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                    <span class="nav__hamburger"></span>
+                </button>
+                <ul class="nav__menu" role="menubar">
+                    <li class="nav__item" role="none">
+                        <a href="#current-weather" class="nav__link" role="menuitem">Current</a>
+                    </li>
+                    <li class="nav__item" role="none">
+                        <a href="#forecast" class="nav__link" role="menuitem">Forecast</a>
+                    </li>
+                    <li class="nav__item" role="none">
+                        <a href="#settings" class="nav__link" role="menuitem">Settings</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content" class="main" role="main">
+        <!-- Loading Spinner -->
+        <div class="loading" id="loading" aria-hidden="true">
+            <div class="loading__spinner" aria-label="Loading weather data"></div>
+            <p class="loading__text">Fetching weather data...</p>
+        </div>
+
+        <!-- Error Message -->
+        <div class="error" id="error" role="alert" aria-live="polite" style="display: none;">
+            <div class="error__content">
+                <h2 class="error__title">Something went wrong</h2>
+                <p class="error__message" id="error-message"></p>
+                <button class="error__retry-btn" id="retry-btn">Try Again</button>
+            </div>
+        </div>
+
+        <!-- Location Search -->
+        <section class="search-section" aria-label="Location search">
+            <div class="container">
+                <div class="search">
+                    <div class="search__input-group">
+                        <label for="location-input" class="search__label visually-hidden">
+                            Enter city name or coordinates
+                        </label>
+                        <input
+                            type="text"
+                            id="location-input"
+                            class="search__input"
+                            placeholder="Enter city name..."
+                            autocomplete="off"
+                            aria-describedby="search-help"
+                        >
+                        <button class="search__btn" id="search-btn" aria-label="Search weather for location">
+                            <svg class="search__icon" aria-hidden="true">
+                                <use href="#icon-search"></use>
+                            </svg>
+                        </button>
+                        <button class="search__location-btn" id="current-location-btn" aria-label="Use current location">
+                            <svg class="search__icon" aria-hidden="true">
+                                <use href="#icon-location"></use>
+                            </svg>
+                        </button>
+                    </div>
+                    <p class="search__help" id="search-help">
+                        Search by city name or use current location
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Current Weather -->
+        <section class="current-weather" id="current-weather" aria-label="Current weather conditions">
+            <div class="container">
+                <div class="weather-card weather-card--current" id="current-weather-card" style="display: none;">
+                    <div class="weather-card__header">
+                        <h2 class="weather-card__location" id="current-location">Loading...</h2>
+                        <p class="weather-card__date" id="current-date"></p>
+                    </div>
+
+                    <div class="weather-card__main">
+                        <div class="weather-card__temperature">
+                            <span class="weather-card__temp" id="current-temp">--</span>
+                            <span class="weather-card__unit">°C</span>
+                        </div>
+                        <div class="weather-card__icon">
+                            <img id="current-weather-icon" src="" alt="Weather condition" class="weather-icon">
+                        </div>
+                        <div class="weather-card__description">
+                            <p class="weather-card__condition" id="current-condition">--</p>
+                            <p class="weather-card__feels-like">
+                                Feels like <span id="feels-like-temp">--</span>°C
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="weather-card__details">
+                        <div class="weather-detail">
+                            <span class="weather-detail__label">Humidity</span>
+                            <span class="weather-detail__value" id="current-humidity">--%</span>
+                        </div>
+                        <div class="weather-detail">
+                            <span class="weather-detail__label">Wind Speed</span>
+                            <span class="weather-detail__value" id="current-wind">-- km/h</span>
+                        </div>
+                        <div class="weather-detail">
+                            <span class="weather-detail__label">Pressure</span>
+                            <span class="weather-detail__value" id="current-pressure">-- hPa</span>
+                        </div>
+                        <div class="weather-detail">
+                            <span class="weather-detail__label">Visibility</span>
+                            <span class="weather-detail__value" id="current-visibility">-- km</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7-Day Forecast -->
+        <section class="forecast" id="forecast" aria-label="7-day weather forecast">
+            <div class="container">
+                <h2 class="forecast__title">7-Day Forecast</h2>
+                <div class="forecast__grid" id="forecast-grid">
+                    <!-- Forecast cards will be dynamically inserted here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Hourly Forecast -->
+        <section class="hourly-forecast" id="hourly-forecast" aria-label="24-hour weather forecast">
+            <div class="container">
+                <h2 class="hourly-forecast__title">24-Hour Forecast</h2>
+                <div class="hourly-forecast__container">
+                    <div class="hourly-forecast__grid" id="hourly-grid">
+                        <!-- Hourly forecast cards will be dynamically inserted here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer__content">
+                <p class="footer__text">
+                    Weather data provided by
+                    <a href="https://open-meteo.com" class="footer__link" target="_blank" rel="noopener noreferrer">
+                        Open-Meteo API
+                    </a>
+                </p>
+                <p class="footer__copyright">
+                    © 2024 WeatherNow. Built with modern web technologies.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SVG Icon Sprite -->
+    <svg class="icon-sprite" aria-hidden="true" style="display: none;">
+        <defs>
+            <symbol id="icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+            </symbol>
+            <symbol id="icon-location" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+            </symbol>
+        </defs>
+    </svg>
+
+    <!-- JavaScript Modules -->
+    <script type="module" src="./src/js/main.js"></script>
+</body>
+</html>
