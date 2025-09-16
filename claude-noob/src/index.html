@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude-Flow: AI-Powered Expertise Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo-section">
+                <h1 class="main-title">Claude-Flow</h1>
+                <p class="subtitle">AI-Powered Expertise Assistant with SPARC Framework</p>
+            </div>
+            <div class="sparc-badge">
+                <span class="sparc-text">SPARC</span>
+                <span class="sparc-full">Specification • Pseudocode • Architecture • Refinement • Completion</span>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <section class="expertise-section">
+                <h2 class="section-title">Select Your Expertise Areas</h2>
+                <p class="section-description">Choose the areas where you'd like AI assistance. Claude-Flow will customize its responses using the SPARC methodology.</p>
+
+                <div class="expertise-grid">
+                    <div class="expertise-card" data-expertise="marketing">
+                        <div class="card-header">
+                            <input type="checkbox" id="marketing" class="expertise-checkbox">
+                            <label for="marketing" class="card-label">
+                                <div class="icon-wrapper">
+                                    <svg class="expertise-icon" viewBox="0 0 24 24">
+                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                    </svg>
+                                </div>
+                                <span class="card-title">Marketing</span>
+                            </label>
+                        </div>
+                        <div class="card-content">
+                            <p>Strategic marketing campaigns, brand positioning, customer acquisition, and market analysis.</p>
+                            <div class="sparc-preview">
+                                <span class="sparc-tag">SPARC Focus:</span>
+                                <span>Campaign Architecture & Market Refinement</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="expertise-card" data-expertise="sales">
+                        <div class="card-header">
+                            <input type="checkbox" id="sales" class="expertise-checkbox">
+                            <label for="sales" class="card-label">
+                                <div class="icon-wrapper">
+                                    <svg class="expertise-icon" viewBox="0 0 24 24">
+                                        <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                                    </svg>
+                                </div>
+                                <span class="card-title">Sales</span>
+                            </label>
+                        </div>
+                        <div class="card-content">
+                            <p>Sales processes, lead generation, conversion optimization, and customer relationship management.</p>
+                            <div class="sparc-preview">
+                                <span class="sparc-tag">SPARC Focus:</span>
+                                <span>Process Specification & Conversion Completion</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="expertise-card" data-expertise="learning">
+                        <div class="card-header">
+                            <input type="checkbox" id="learning" class="expertise-checkbox">
+                            <label for="learning" class="card-label">
+                                <div class="icon-wrapper">
+                                    <svg class="expertise-icon" viewBox="0 0 24 24">
+                                        <path d="M12 2l0 0c1.1 0 2 .9 2 2v3h3c1.1 0 2 .9 2 2v10c0 1.1-.9 2-2 2H7c-1.1 0-2-.9-2-2V9c0-1.1.9-2 2-2h3V4c0-1.1.9-2 2-2z"/>
+                                    </svg>
+                                </div>
+                                <span class="card-title">Learning & Development</span>
+                            </label>
+                        </div>
+                        <div class="card-content">
+                            <p>Training programs, skill development, educational content creation, and learning analytics.</p>
+                            <div class="sparc-preview">
+                                <span class="sparc-tag">SPARC Focus:</span>
+                                <span>Educational Architecture & Progressive Refinement</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="input-section">
+                <h2 class="section-title">Describe Your Challenge</h2>
+                <div class="input-wrapper">
+                    <textarea
+                        id="challenge-input"
+                        class="challenge-textarea"
+                        placeholder="Describe the challenge or task you need help with. Be as specific as possible - Claude-Flow will apply SPARC methodology to provide structured, actionable guidance."
+                        rows="4"
+                    ></textarea>
+                    <div class="input-footer">
+                        <div class="character-count">
+                            <span id="char-count">0</span>/1000 characters
+                        </div>
+                        <button id="generate-btn" class="generate-button" disabled>
+                            <span class="btn-text">Generate SPARC Solution</span>
+                            <svg class="btn-icon" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="results-section" id="results-section" style="display: none;">
+                <h2 class="section-title">Your SPARC-Powered Solution</h2>
+                <div class="sparc-methodology">
+                    <div class="methodology-header">
+                        <h3>SPARC Methodology Applied</h3>
+                        <p>Claude-Flow has analyzed your challenge through the SPARC framework:</p>
+                    </div>
+                    <div class="sparc-phases">
+                        <div class="phase-indicator">
+                            <div class="phase-step active" data-phase="specification">
+                                <span class="step-number">S</span>
+                                <span class="step-name">Specification</span>
+                            </div>
+                            <div class="phase-arrow">→</div>
+                            <div class="phase-step active" data-phase="pseudocode">
+                                <span class="step-number">P</span>
+                                <span class="step-name">Pseudocode</span>
+                            </div>
+                            <div class="phase-arrow">→</div>
+                            <div class="phase-step active" data-phase="architecture">
+                                <span class="step-number">A</span>
+                                <span class="step-name">Architecture</span>
+                            </div>
+                            <div class="phase-arrow">→</div>
+                            <div class="phase-step active" data-phase="refinement">
+                                <span class="step-number">R</span>
+                                <span class="step-name">Refinement</span>
+                            </div>
+                            <div class="phase-arrow">→</div>
+                            <div class="phase-step active" data-phase="completion">
+                                <span class="step-number">C</span>
+                                <span class="step-name">Completion</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="output-content" id="output-content">
+                    <!-- Dynamic content will be inserted here -->
+                </div>
+
+                <div class="action-buttons">
+                    <button class="action-btn secondary" id="refine-btn">
+                        <svg class="btn-icon" viewBox="0 0 24 24">
+                            <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                        </svg>
+                        Refine Solution
+                    </button>
+                    <button class="action-btn primary" id="new-challenge-btn">
+                        <svg class="btn-icon" viewBox="0 0 24 24">
+                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                        </svg>
+                        New Challenge
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <p>&copy; 2024 Claude-Flow. Powered by SPARC Methodology.</p>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Documentation</a>
+                    <a href="#" class="footer-link">GitHub</a>
+                    <a href="#" class="footer-link">Support</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h3>Applying SPARC Methodology</h3>
+            <p id="loading-phase">Analyzing your challenge...</p>
+        </div>
+    </div>
+
+    <script src="sparc-data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

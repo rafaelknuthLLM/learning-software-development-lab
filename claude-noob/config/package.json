@@ -1,0 +1,125 @@
+{
+  "name": "claude-flow-app",
+  "version": "1.0.0",
+  "description": "AI-Powered Expertise Assistant with SPARC Framework Integration",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "npx http-server src -p 3000 -o",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "build": "npm run minify:css && npm run minify:js",
+    "minify:css": "cleancss -o dist/styles.min.css src/styles.css",
+    "minify:js": "terser src/app.js -o dist/app.min.js --compress --mangle",
+    "serve:dist": "npx http-server dist -p 3001 -o",
+    "lint": "eslint src/app.js",
+    "lint:fix": "eslint src/app.js --fix",
+    "hooks:pre-task": "npx claude-flow@alpha hooks pre-task --description \"$npm_config_task\"",
+    "hooks:post-edit": "npx claude-flow@alpha hooks post-edit --file \"$npm_config_file\" --memory-key \"$npm_config_key\"",
+    "hooks:notify": "npx claude-flow@alpha hooks notify --message \"$npm_config_message\"",
+    "hooks:post-task": "npx claude-flow@alpha hooks post-task --task-id \"$npm_config_task_id\"",
+    "hooks:session-end": "npx claude-flow@alpha hooks session-end --export-metrics true",
+    "sparc:init": "npx claude-flow@alpha sparc modes",
+    "sparc:run": "npx claude-flow@alpha sparc run \"$npm_config_mode\" \"$npm_config_task\"",
+    "sparc:tdd": "npx claude-flow@alpha sparc tdd \"$npm_config_feature\"",
+    "sparc:batch": "npx claude-flow@alpha sparc batch \"$npm_config_modes\" \"$npm_config_task\"",
+    "sparc:pipeline": "npx claude-flow@alpha sparc pipeline \"$npm_config_task\"",
+    "deploy:github": "gh-pages -d src",
+    "deploy:netlify": "netlify deploy --prod --dir=src"
+  },
+  "keywords": [
+    "claude-flow",
+    "sparc",
+    "methodology",
+    "ai",
+    "expertise",
+    "assistant",
+    "marketing",
+    "sales",
+    "learning",
+    "development",
+    "beginner-friendly"
+  ],
+  "author": "Claude-Flow Team",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jsdom": "^23.0.0",
+    "@testing-library/jest-dom": "^6.1.0",
+    "eslint": "^8.50.0",
+    "terser": "^5.20.0",
+    "clean-css-cli": "^5.6.0",
+    "http-server": "^14.1.1",
+    "gh-pages": "^6.0.0",
+    "netlify-cli": "^16.0.0"
+  },
+  "dependencies": {
+    "claude-flow": "^2.0.0-alpha"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": ["<rootDir>/tests/setup.js"],
+    "collectCoverageFrom": [
+      "src/app.js",
+      "src/sparc-data.js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    },
+    "testMatch": [
+      "**/tests/**/*.test.js"
+    ]
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "es2021": true,
+      "jest": true
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+      "ecmaVersion": 12,
+      "sourceType": "module"
+    },
+    "rules": {
+      "indent": ["error", 2],
+      "linebreak-style": ["error", "unix"],
+      "quotes": ["error", "single"],
+      "semi": ["error", "always"],
+      "no-console": "warn",
+      "no-unused-vars": "error",
+      "prefer-const": "error",
+      "no-var": "error"
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ],
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/learning-software-development-lab/claude-noob.git"
+  },
+  "bugs": {
+    "url": "https://github.com/learning-software-development-lab/claude-noob/issues"
+  },
+  "homepage": "https://github.com/learning-software-development-lab/claude-noob#readme",
+  "files": [
+    "src/",
+    "docs/",
+    "config/",
+    "README.md",
+    "LICENSE"
+  ]
+}

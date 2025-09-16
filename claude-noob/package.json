@@ -1,0 +1,35 @@
+{
+  "name": "claude-flow-app",
+  "version": "1.0.0",
+  "description": "Beginner-friendly Claude-Flow application with SPARC methodology",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "jest --coverage --verbose",
+    "test:watch": "jest --watch",
+    "serve": "python3 -m http.server 8000",
+    "lint": "eslint src/",
+    "validate": "npm run test && npm run lint"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "jsdom": "^24.0.0"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/**/*.test.js"
+    ],
+    "coverageDirectory": "coverage",
+    "coverageReporters": [
+      "text",
+      "lcov",
+      "html"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/tests/setup.js"
+    ]
+  }
+}
